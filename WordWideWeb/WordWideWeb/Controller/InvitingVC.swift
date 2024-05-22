@@ -89,6 +89,7 @@ class InvitingVC: UIViewController {
 //        return invitationDatas
 //    }
     
+    
 }
     
     
@@ -145,6 +146,7 @@ extension InvitingVC: UITableViewDataSource, UITableViewDelegate {
             }
             cell.acceptButtonAction = {
                 print("단어장 초대 수락")
+                print("테스트테스트테스트테스트테스트테스트")
             }
             
             return cell
