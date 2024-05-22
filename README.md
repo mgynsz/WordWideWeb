@@ -235,7 +235,7 @@ WWW
 ```
 
 
-## Developer
+## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
     - ㅁㅁㅁㅁㅁㅁ
     - ㅁㅁㅁㅁㅁㅁ
@@ -246,7 +246,7 @@ WWW
     - ㅁㅁㅁㅁㅁㅁ
     - ㅁㅁㅁㅁㅁㅁ
     - ㅁㅁㅁㅁㅁㅁ
-*  **장진영** ([mgynsz](https://github.com/mgynsz)
+*  **장진영** ([mgynsz](https://github.com/mgynsz))
     - ㅁㅁㅁㅁㅁㅁ
     - ㅁㅁㅁㅁㅁㅁ
     - ㅁㅁㅁㅁㅁㅁ
