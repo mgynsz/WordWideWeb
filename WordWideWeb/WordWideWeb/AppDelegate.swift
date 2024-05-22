@@ -10,6 +10,7 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseStorage
 import FirebaseFirestore
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,6 +32,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
+        UNUserNotificationCenter.current().delegate = self
+        
+        let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound] // 필요한 알림 권한을 설정
+        UNUserNotificationCenter.current().requestAuthorization(
+            options: authOptions,
+            completionHandler: { _, _ in }
+        )
+        
         return true
     }
 
@@ -46,6 +55,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    // 포그라운드 상태(앱 실행 중)일때 알림을 받으면 해야할 행동을 정의
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        
+        completionHandler([.list, .banner])
+    }
+    
+    // 사용자가 알림 메시지를 클릭 했을 경우에 실행
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("move to testVC")
+        let wordbook = fetchWordbooks(id: response.notification.request.identifier)
+ 
+        NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: ["wordbook": wordbook])
+        completionHandler()
+    }
+    
+    func fetchWordbooks(id: String) -> [Wordbook] {
+        var wordbooks: [Wordbook]?
+        Task {
+            do {
+                print(id)
+                wordbooks = try await FirestoreManager.shared.fetchWordbooks(for: id)
+                print("wordbooks\(wordbooks)")
+            } catch {
+                print("Error fetching wordbooks: \(error.localizedDescription)")
+            }
+        }
+        guard let result = wordbooks else {return []}
+        return result
     }
 }
 
