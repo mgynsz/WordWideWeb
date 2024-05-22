@@ -9,13 +9,15 @@ import UIKit
 import SnapKit
 
 class MyPageModalViewController: UIViewController {
-    
+
+    var term: String = ""
+    var receivedItem: Item = Item(word: "", pos: "", sense: [])
     
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(returnWord), for: .touchUpInside)
+        button.addTarget(MyPageModalViewController.self, action: #selector(returnWord), for: .touchUpInside)
         return button
     }()
     
@@ -25,7 +27,7 @@ class MyPageModalViewController: UIViewController {
     
     lazy var wordLabel: UILabel = {
         let label = UILabel()
-        label.text = "World"
+        label.text = term
         label.textColor = .white
         label.font = UIFont.pretendard(size: 32, weight: .semibold)
         label.textAlignment = .center
@@ -40,20 +42,24 @@ class MyPageModalViewController: UIViewController {
         return label
     }()
     
-    lazy var meaningLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1. 명사 세계"
-        label.textAlignment = .center
-        label.textColor = .white
-        return label
+    let stackview: UIStackView = {
+        let stv = UIStackView()
+        stv.axis = .vertical
+        return stv
     }()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "mainBtn")
-        setupViews()
-        
         navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        NetworkManager().fetchAPIExactWord(query: term) { item in
+            self.receivedItem = item
+        }
+        
+        setupViews()
+        setStackView(item: receivedItem)
     }
     
     func setupViews() {
@@ -73,10 +79,22 @@ class MyPageModalViewController: UIViewController {
             make.top.equalToSuperview().offset(80)
             make.leading.equalToSuperview().offset(120)
         }
-        view.addSubview(meaningLabel)
-        meaningLabel.snp.makeConstraints { make in
+        view.addSubview(stackview)
+        stackview.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(127)
             make.leading.equalToSuperview().offset(20)
+        }
+    }
+
+    func setStackView(item: Item) {
+        item.sense.forEach { senseElement in
+            let label = UILabel()
+            label.numberOfLines = 0
+            label.text = "\(senseElement.senseOrder). \(item.pos)  \(senseElement.transWord)"
+            label.textAlignment = .center
+            label.textColor = .white
+            
+            stackview.addArrangedSubview(label)
         }
     }
 }

@@ -14,7 +14,7 @@ struct InvitationData {
     let photoURL: String?
     let title: String
     let dueDate: String
-    let createdAt: Timestamp
+    let createdAt: String
     let words: [String]
     var open = false
 }

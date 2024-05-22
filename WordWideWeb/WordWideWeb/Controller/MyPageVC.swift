@@ -29,7 +29,7 @@ class MyPageVC: UIViewController {
         button.layer.shadowRadius = 10
         return button
     }()
-
+    
     
     // 단어장 카드 collectionView
     var collection: UICollectionView = {
@@ -47,6 +47,7 @@ class MyPageVC: UIViewController {
     }()
     
     var wordbookList = [(Wordbook, User)]()
+    var addWordbookClosure: ((Wordbook) -> Void) = {_ in }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,6 +133,7 @@ class MyPageVC: UIViewController {
     }
 }
 
+
 extension MyPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -150,8 +152,8 @@ extension MyPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        addWordbookClosure(wordbookList[indexPath.row].0)
         let myPageWordVC = MyPageWordViewController()
-        myPageWordVC.modalPresentationStyle = .fullScreen
         present(myPageWordVC, animated: true, completion: nil)
     }
 }

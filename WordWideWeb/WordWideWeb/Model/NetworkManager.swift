@@ -69,6 +69,61 @@ final class NetworkManager: NSObject, ObservableObject {
         }.resume()
     }
     
+    func fetchAPIExactWord(query: String, completion: @escaping (Item) -> Void) {
+        
+        guard let apiKey = apiKey else {
+            print("API key not found")
+            return
+        }
+        
+        var components = URLComponents(string: "https://krdict.korean.go.kr/api/search")!
+        components.queryItems = [
+            URLQueryItem(name: "key", value: apiKey),
+            URLQueryItem(name: "q", value: query),
+            URLQueryItem(name: "translated", value: "y"),
+            URLQueryItem(name: "trans_lang", value: "1"),
+            URLQueryItem(name: "advanced", value: "y"),
+            URLQueryItem(name: "target", value: "1")
+        ]
+        
+        guard let url = components.url else {
+            print("Failed to create URL")
+            return
+        }
+        print(url)
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                print("Invalid response")
+                return
+            }
+            
+            // 응답 코드가 성공(200)인지 확인
+            guard (200...299).contains(httpResponse.statusCode) else {
+                print("Invalid response code: \(httpResponse.statusCode)")
+                return
+            }
+            
+            guard let data = data else {
+                print("No data received")
+                return
+            }
+            
+            self.setXMLParser(data: data)
+            
+            DispatchQueue.main.async {
+                if let item = self.items.first {
+                    completion(item)
+                }
+            }
+        }.resume()
+    }
+    
     func setXMLParser(data: Data) {
         let parser = XMLParser(data: data)
         parser.delegate = self

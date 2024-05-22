@@ -70,19 +70,19 @@ class InvitingVC: UIViewController {
         }
     }
     
-    func removeExpiredInvitations() {
-            let currentDate = Date()
-            
-            for section in (0..<invitationList.count).reversed() {
-                for row in (0..<invitationList[section].count).reversed() {
-                    let invitation = invitationList[section][row]
-                    if let dueDate = invitation.dueDate, dueDate < currentDate {
-                        invitationList[section].remove(at: row)
-                    }
-                }
-            }
-            tableView.reloadData()
-        }
+//    func removeExpiredInvitations() {
+//            let currentDate = Date()
+//            
+//            for section in (0..<invitationList.count).reversed() {
+//                for row in (0..<invitationList[section].count).reversed() {
+//                    let invitation = invitationList[section][row]
+//                    if let dueDate = invitation.dueDate, dueDate < currentDate {
+//                        invitationList[section].remove(at: row)
+//                    }
+//                }
+//            }
+//            tableView.reloadData()
+//        }
     
 //    private func map(_ users: [User], _ wordbooks: [Wordbook], _ words: [Word]) -> [InvitationData] {
 //        items.reduce(into: [invitationList]()) { acc, wordbook in

@@ -16,6 +16,7 @@ class ExpandableTableViewCell: UITableViewCell {
         let stv = UIStackView()
         stv.axis = .horizontal
         stv.distribution = .equalSpacing
+        stv.spacing = 16
         return stv
     }()
     
@@ -86,7 +87,8 @@ class ExpandableTableViewCell: UITableViewCell {
         
         labelStackview.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
-            make.horizontalEdges.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.greaterThanOrEqualToSuperview().inset(20)
         }
         
         rejectButton.snp.makeConstraints { make in
