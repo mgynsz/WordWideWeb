@@ -14,7 +14,7 @@ import AuthenticationServices
 
 class AuthenticationVC: UIViewController {
     
-    // 이미지 추가해야함 애니메이션?
+    // 이미지 추가해야함 애니메이션? 회의로 결정하기
     
     private let welcomeLabel: UILabel = {
         let label = UILabel()
