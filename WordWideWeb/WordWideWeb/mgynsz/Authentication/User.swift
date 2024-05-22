@@ -33,6 +33,7 @@ struct Wordbook: Codable, Hashable {
     let colorCover: String
     var wordCount: Int
     var words: [Word]
+    let maxAttendees: Int
     
     static func == (lhs: Wordbook, rhs: Wordbook) -> Bool {
         return lhs.id == rhs.id

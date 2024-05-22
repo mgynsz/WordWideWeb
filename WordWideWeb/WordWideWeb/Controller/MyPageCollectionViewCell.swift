@@ -7,13 +7,13 @@
 
 import UIKit
 import SnapKit
+import SDWebImage
 
 
 class MyPageCollectionViewCell: UICollectionViewCell {
     
-    private lazy var redView: UIView = {
+    private lazy var coverView: UIView = {
         let bgView = UIView()
-        bgView.backgroundColor = UIColor(named: "cardRed")
         bgView.layer.cornerRadius = 20
         bgView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         return bgView
@@ -28,7 +28,7 @@ class MyPageCollectionViewCell: UICollectionViewCell {
     }()
     
     private lazy var vStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [redView, whiteView])
+        let stackView = UIStackView(arrangedSubviews: [coverView, whiteView])
         stackView.axis = .vertical
         return stackView
     }()
@@ -56,7 +56,6 @@ class MyPageCollectionViewCell: UICollectionViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "개발자의 영단어"
         label.textAlignment = .center
         label.font = UIFont.pretendard(size: 24, weight: .semibold)
         label.textColor = .black
@@ -66,7 +65,6 @@ class MyPageCollectionViewCell: UICollectionViewCell {
     
     lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "jiyeon"
         label.textAlignment = .center
         label.textColor = .black
         label.font = UIFont.pretendard(size: 14, weight: .semibold)
@@ -76,9 +74,9 @@ class MyPageCollectionViewCell: UICollectionViewCell {
     
     private lazy var profileImage: UIImageView = {
         let profileImage = UIImageView()
-        profileImage.image = UIImage(named: "fakeLogo")
         profileImage.backgroundColor = .black
         profileImage.layer.cornerRadius = 13
+        profileImage.clipsToBounds = true
         return profileImage
     }()
     
@@ -97,7 +95,7 @@ class MyPageCollectionViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
         
-        redView.snp.makeConstraints { make in
+        coverView.snp.makeConstraints { make in
             make.height.equalTo(vStackView.snp.height).multipliedBy(0.6)
         }
         
@@ -129,6 +127,14 @@ class MyPageCollectionViewCell: UICollectionViewCell {
             make.leading.equalToSuperview().offset(20)
             make.height.width.equalTo(26)
         }
-        
+    }
+    
+    func configure(with wordbook: Wordbook, user: User) {
+        titleLabel.text = wordbook.title
+        nameLabel.text = user.displayName
+        if let photoURL = URL(string: user.photoURL ?? "") {
+            profileImage.sd_setImage(with: photoURL, completed: nil)
+        }
+        coverView.backgroundColor = UIColor(hex: wordbook.colorCover)
     }
 }
