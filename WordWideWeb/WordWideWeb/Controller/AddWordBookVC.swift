@@ -427,7 +427,11 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         var attendees: [String] = [Auth.auth().currentUser!.uid]
         attendees.append(contentsOf: invitedFriends.map { $0.uid })
         
+
+        let maxAttendees = Int(attendeesStepper.value)
+
         let id = UUID().uuidString
+
 
         let wordbook = Wordbook(
             id: UUID().uuidString,
@@ -440,7 +444,8 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             sharedWith: isPublic ? [] : attendees,
             colorCover: coverColor,
             wordCount: 0,
-            words: []
+            words: [],
+            maxAttendees: Int(attendeesStepper.value)
         )
         
         guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }

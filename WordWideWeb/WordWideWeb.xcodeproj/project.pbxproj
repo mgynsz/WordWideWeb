@@ -57,7 +57,6 @@
 		9C1F0FC22BFB94EE002D680D /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FC12BFB94EE002D680D /* TestViewController.swift */; };
 		9C1F0FC42BFBA98C002D680D /* MyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FC32BFBA98C002D680D /* MyPage.swift */; };
 		9C1F0FC62BFBA9E6002D680D /* CarouselLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FC52BFBA9E6002D680D /* CarouselLayout.swift */; };
-		9C1F0FC82BFBAA1A002D680D /* MyPage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FC72BFBAA1A002D680D /* MyPage+Ext.swift */; };
 		9C1F0FCA2BFBAAB4002D680D /* CollectionView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FC92BFBAAB4002D680D /* CollectionView+Ext.swift */; };
 		9C1F0FCE2BFBABE5002D680D /* MyPageWordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FCD2BFBABE5002D680D /* MyPageWordViewController.swift */; };
 		9C1F0FD02BFBAC25002D680D /* MyPageModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1F0FCF2BFBAC25002D680D /* MyPageModalViewController.swift */; };
@@ -133,7 +132,6 @@
 		9C1F0FC12BFB94EE002D680D /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		9C1F0FC32BFBA98C002D680D /* MyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPage.swift; sourceTree = "<group>"; };
 		9C1F0FC52BFBA9E6002D680D /* CarouselLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselLayout.swift; sourceTree = "<group>"; };
-		9C1F0FC72BFBAA1A002D680D /* MyPage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MyPage+Ext.swift"; sourceTree = "<group>"; };
 		9C1F0FC92BFBAAB4002D680D /* CollectionView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionView+Ext.swift"; sourceTree = "<group>"; };
 		9C1F0FCD2BFBABE5002D680D /* MyPageWordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageWordViewController.swift; sourceTree = "<group>"; };
 		9C1F0FCF2BFBAC25002D680D /* MyPageModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageModalViewController.swift; sourceTree = "<group>"; };
@@ -286,8 +284,10 @@
 				9C1F0FDD2BFCB33F002D680D /* DefaultTableViewCell.swift */,
 				9C1F0FDF2BFCB351002D680D /* ExpandableTableViewCell.swift */,
 				9C1F0FE12BFDCEC4002D680D /* InvitedFriendCell.swift */,
+				2A1166002BFB723D000F61B0 /* WordbookCell.swift */,
 				F4ECA7662BFDDCA800CD24E6 /* PlayingListView.swift */,
 				F4ECA7682BFDDCBF00CD24E6 /* PlayingListViewCell.swift */,
+
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -304,9 +304,7 @@
 				9C1F0F9B2BF6F4E8002D680D /* DictionaryVC.swift */,
 				9C1F0F9D2BF732EB002D680D /* InvitingVC.swift */,
 				9C1F0F8B2BF5E0BC002D680D /* MyInfoVC.swift */,
-				2A1166002BFB723D000F61B0 /* WordbookCell.swift */,
 				2A1165FA2BFB1B67000F61B0 /* AddWordBookVC.swift */,
-				2A1165FE2BFB2175000F61B0 /* RadioButton.swift */,
 				2A6C0CEC2BF911840035B405 /* ProfileVC.swift */,
 				2A6C0CF02BF998670035B405 /* ProfileViewModel.swift */,
 				F410EBFF2BF72F620075BA50 /* TestIntroViewController.swift */,
@@ -337,7 +335,6 @@
 				2A6C0CEE2BF9415D0035B405 /* NotificationExtensions.swift */,
 				2A8447102BF3590300AE319A /* Formatter.swift */,
 				2A8447112BF3590300AE319A /* Numeric.swift */,
-				9C1F0FC72BFBAA1A002D680D /* MyPage+Ext.swift */,
 				9C1F0FC92BFBAAB4002D680D /* CollectionView+Ext.swift */,
 			);
 			path = Extension;
@@ -346,6 +343,7 @@
 		F410EBA72BF32B800075BA50 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				2A1165FE2BFB2175000F61B0 /* RadioButton.swift */,
 				F410EBC22BF39C3E0075BA50 /* ListViewCell.swift */,
 				F410EBF12BF3C3D70075BA50 /* SearchBarWhite.swift */,
 				F410EBFB2BF5DDB80075BA50 /* BlockCell.swift */,
@@ -493,7 +491,6 @@
 				2A8447322BF36B3800AE319A /* AuthenticationVC.swift in Sources */,
 				F4ECA7692BFDDCBF00CD24E6 /* PlayingListViewCell.swift in Sources */,
 				9C1F0FCA2BFBAAB4002D680D /* CollectionView+Ext.swift in Sources */,
-				9C1F0FC82BFBAA1A002D680D /* MyPage+Ext.swift in Sources */,
 				2A511B1A2BF625D400CDA177 /* SignInAppleHelper.swift in Sources */,
 				2A67F9032BF7675D0075465D /* FirestoreManager.swift in Sources */,
 				9C1F0FC22BFB94EE002D680D /* TestViewController.swift in Sources */,

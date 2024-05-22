@@ -11,16 +11,15 @@ import SnapKit
 // 단어카드 다음페이지 : 단어 리스트 페이지
 class MyPageWordViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
-    lazy var backButton: UIButton = {
+    private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(returnMain), for: .touchUpInside)
         return button
     }()
-    @objc func returnMain() {
-//        self.dismiss(animated: true)
-        self.navigationController?.popViewController(animated: true)
+    
+    @objc private func closeTapped() {
+        dismiss(animated: true, completion: nil)
     }
     
     lazy var wordButton: UIButton = {
@@ -52,8 +51,8 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
     }
  
     private func layout() {
-        view.addSubview(backButton)
-        backButton.snp.makeConstraints { make in
+        view.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(24)
             make.left.equalTo(view).offset(16)
         }
@@ -66,5 +65,7 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
 //            make.trailing.equalToSuperview().offset(-270)
 //            make.bottom.equalToSuperview().offset(-700)
         }
+        
+        closeButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
     }
 }
