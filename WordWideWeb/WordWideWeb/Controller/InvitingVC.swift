@@ -9,7 +9,12 @@ import UIKit
 
 class InvitingVC: UIViewController {
     
-    private let logo: UILabel = {
+    private let logoImage: UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage.smileFace
+        return label
+    }()
+    private let logoLabel: UILabel = {
         let label = UILabel()
         label.text = "Notify"
         label.font = UIFont.pretendard(size: 20, weight: .semibold)
@@ -43,20 +48,41 @@ class InvitingVC: UIViewController {
     }
     
     func setConstraints() {
-        [logo, tableview].forEach {
+        [logoImage, logoLabel, tableview].forEach {
             self.view.addSubview($0)
         }
         
-        logo.snp.makeConstraints { make in
+        logoImage.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
+            make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.trailing.equalTo(logoLabel.snp.leading).offset(3)
+            make.height.width.equalTo(28)
+        }
+        
+        logoLabel.snp.makeConstraints { make in
+            make.verticalEdges.equalTo(logoImage.snp.verticalEdges)
+            make.leading.equalTo(logoImage.snp.trailing)
         }
         
         tableview.snp.makeConstraints { make in
-            make.top.equalTo(logo.snp.bottom).offset(10)
+            make.top.equalTo(logoImage.snp.bottom).offset(10)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
+    
+    func removeExpiredInvitations() {
+            let currentDate = Date()
+            
+            for section in (0..<invitationList.count).reversed() {
+                for row in (0..<invitationList[section].count).reversed() {
+                    let invitation = invitationList[section][row]
+                    if let dueDate = invitation.dueDate, dueDate < currentDate {
+                        invitationList[section].remove(at: row)
+                    }
+                }
+            }
+            tableView.reloadData()
+        }
     
 //    private func map(_ users: [User], _ wordbooks: [Wordbook], _ words: [Word]) -> [InvitationData] {
 //        items.reduce(into: [invitationList]()) { acc, wordbook in
@@ -126,8 +152,9 @@ extension InvitingVC: UITableViewDataSource, UITableViewDelegate {
             
             cell.bindExpandedView(words: index.words)
             cell.rejectButtonAction = { [weak self] in
-                self?.invitationList.remove(at: indexPath.row)
-                self?.tableview.deleteRows(at: [indexPath], with: .automatic)
+                guard let self = self else { return }
+                self.invitationList.remove(at: indexPath.section)
+                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
             }
             cell.acceptButtonAction = {
                 print("단어장 초대 수락")

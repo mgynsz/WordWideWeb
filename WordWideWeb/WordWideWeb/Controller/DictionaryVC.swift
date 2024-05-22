@@ -11,7 +11,12 @@ import FirebaseAuth
 
 class DictionaryVC: UIViewController {
     
-    private let logo: UILabel = {
+    private let logoImage: UIImageView = {
+        let label = UIImageView()
+        label.image = UIImage.smileFace
+        return label
+    }()
+    private let logoLabel: UILabel = {
         let label = UILabel()
         label.text = "Add Word"
         label.font = UIFont.pretendard(size: 20, weight: .semibold)
@@ -53,17 +58,24 @@ class DictionaryVC: UIViewController {
     }
     
     func setConstraints() {
-        [logo, searchBar, tableview].forEach {
+        [logoImage, logoLabel, searchBar, tableview].forEach {
             self.view.addSubview($0)
         }
         
-        logo.snp.makeConstraints { make in
+        logoImage.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
-            make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
+            make.trailing.equalTo(logoLabel.snp.leading).offset(3)
+            make.height.width.equalTo(28)
+        }
+        
+        logoLabel.snp.makeConstraints { make in
+            make.verticalEdges.equalTo(logoImage.snp.verticalEdges)
+            make.leading.equalTo(logoImage.snp.trailing)
         }
         
         searchBar.snp.makeConstraints { make in
-            make.top.equalTo(logo.snp.bottom).offset(10)
+            make.top.equalTo(logoImage.snp.bottom).offset(10)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
