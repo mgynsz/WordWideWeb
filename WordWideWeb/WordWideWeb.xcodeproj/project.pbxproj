@@ -83,6 +83,9 @@
 		F410EBF22BF3C3D70075BA50 /* SearchBarWhite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F410EBF12BF3C3D70075BA50 /* SearchBarWhite.swift */; };
 		F410EBFC2BF5DDB80075BA50 /* BlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F410EBFB2BF5DDB80075BA50 /* BlockCell.swift */; };
 		F410EC002BF72F620075BA50 /* TestIntroViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F410EBFF2BF72F620075BA50 /* TestIntroViewController.swift */; };
+		F46CE3052BFDE1110089E73B /* PushNotificationHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46CE3042BFDE1110089E73B /* PushNotificationHelper.swift */; };
+		F4ECA7672BFDDCA800CD24E6 /* PlayingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ECA7662BFDDCA800CD24E6 /* PlayingListView.swift */; };
+		F4ECA7692BFDDCBF00CD24E6 /* PlayingListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ECA7682BFDDCBF00CD24E6 /* PlayingListViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +157,9 @@
 		F410EBF12BF3C3D70075BA50 /* SearchBarWhite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarWhite.swift; sourceTree = "<group>"; };
 		F410EBFB2BF5DDB80075BA50 /* BlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCell.swift; sourceTree = "<group>"; };
 		F410EBFF2BF72F620075BA50 /* TestIntroViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestIntroViewController.swift; sourceTree = "<group>"; };
+		F46CE3042BFDE1110089E73B /* PushNotificationHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationHelper.swift; sourceTree = "<group>"; };
+		F4ECA7662BFDDCA800CD24E6 /* PlayingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingListView.swift; sourceTree = "<group>"; };
+		F4ECA7682BFDDCBF00CD24E6 /* PlayingListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayingListViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -279,6 +285,9 @@
 				9C1F0FDF2BFCB351002D680D /* ExpandableTableViewCell.swift */,
 				9C1F0FE12BFDCEC4002D680D /* InvitedFriendCell.swift */,
 				2A1166002BFB723D000F61B0 /* WordbookCell.swift */,
+				F4ECA7662BFDDCA800CD24E6 /* PlayingListView.swift */,
+				F4ECA7682BFDDCBF00CD24E6 /* PlayingListViewCell.swift */,
+
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -302,6 +311,7 @@
 				9C1F0FBF2BFB94BA002D680D /* TestResultViewController.swift */,
 				9C1F0FC12BFB94EE002D680D /* TestViewController.swift */,
 				9C1F0FD32BFBAC93002D680D /* EmptyCollectionViewCell.swift */,
+				F46CE3042BFDE1110089E73B /* PushNotificationHelper.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -465,6 +475,7 @@
 				2A6C0CEF2BF9415D0035B405 /* NotificationExtensions.swift in Sources */,
 				9C1F0FBE2BFB9479002D680D /* TestIntroView.swift in Sources */,
 				9C1F0FD42BFBAC93002D680D /* EmptyCollectionViewCell.swift in Sources */,
+				F4ECA7672BFDDCA800CD24E6 /* PlayingListView.swift in Sources */,
 				F410EBF22BF3C3D70075BA50 /* SearchBarWhite.swift in Sources */,
 				9C1F0FDC2BFC66D1002D680D /* InvitationData.swift in Sources */,
 				2A6C0CED2BF911840035B405 /* ProfileVC.swift in Sources */,
@@ -475,8 +486,10 @@
 				2AA413DD2BF3D1D400C34FEB /* Utilities.swift in Sources */,
 				2A67F9072BF772D80075465D /* SearchFriendsVC.swift in Sources */,
 				2AA413D62BF3D14100C34FEB /* SignInGoogleHelper.swift in Sources */,
+				F46CE3052BFDE1110089E73B /* PushNotificationHelper.swift in Sources */,
 				2A8447382BF3850C00AE319A /* SignInVC.swift in Sources */,
 				2A8447322BF36B3800AE319A /* AuthenticationVC.swift in Sources */,
+				F4ECA7692BFDDCBF00CD24E6 /* PlayingListViewCell.swift in Sources */,
 				9C1F0FCA2BFBAAB4002D680D /* CollectionView+Ext.swift in Sources */,
 				2A511B1A2BF625D400CDA177 /* SignInAppleHelper.swift in Sources */,
 				2A67F9032BF7675D0075465D /* FirestoreManager.swift in Sources */,

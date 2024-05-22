@@ -43,6 +43,8 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
     private let closeButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     
+    private let pushNotificationHelper = PushNotificationHelper.shared
+    
     // State variables
     private var isUploading = false
     private var selectedColorButton: UIButton?
@@ -425,7 +427,11 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         var attendees: [String] = [Auth.auth().currentUser!.uid]
         attendees.append(contentsOf: invitedFriends.map { $0.uid })
         
+
         let maxAttendees = Int(attendeesStepper.value)
+
+        let id = UUID().uuidString
+
 
         let wordbook = Wordbook(
             id: UUID().uuidString,
@@ -441,7 +447,10 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             words: [],
             maxAttendees: Int(attendeesStepper.value)
         )
-
+        
+        guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
+        pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
+      
         activityIndicator.startAnimating()
 
         Task {
@@ -459,6 +468,16 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
                 }
             }
         }
+    }
+    
+    func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
+        guard let timestamp = timestamp else { return nil }
+        
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp.seconds))
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        
+        return components
     }
     
     // MARK: z컬렉션뷰
