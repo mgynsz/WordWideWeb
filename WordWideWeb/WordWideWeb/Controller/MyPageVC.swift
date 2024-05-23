@@ -12,7 +12,7 @@ import FirebaseAuth
 class MyPageVC: UIViewController {
     
     // 좌상단 타이틀 : string만 변경해서 공통 사용
-    lazy var topLabel = LabelFactory().makeLabel(text: "WordWideWeb")
+    lazy var topLabel = LabelFactory().makeLabel(text: "WWW")
     // 좌상단 로고 : 공통 사용
     lazy var topLogo = ImageFactory().makeImage()
     // 우하단 버튼 : 공통 사용
@@ -82,10 +82,9 @@ class MyPageVC: UIViewController {
         }
         
         topLogo.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(62)
-            make.leading.equalToSuperview().offset(17)
-            make.trailing.equalTo(topLabel.snp.leading).offset(-2)
-            make.bottom.equalToSuperview().offset(-745)
+            make.leading.equalTo(view).offset(20)
+            make.centerY.equalTo(topLabel.snp.centerY)
+            make.width.height.equalTo(28)
         }
         
         addWordBookButton.snp.makeConstraints { make in

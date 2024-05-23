@@ -17,7 +17,6 @@ class MyPageModalViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(returnWord), for: .touchUpInside)
         return button
     }()
     
@@ -56,6 +55,8 @@ class MyPageModalViewController: UIViewController {
             self.setStackView(item: item)
         }
         setupViews()
+        
+        closeButton.addTarget(self, action: #selector(returnWord), for: .touchUpInside)
     }
     
     @objc func returnWord() {
