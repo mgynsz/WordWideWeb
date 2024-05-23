@@ -96,6 +96,10 @@
 
 ## Demo
 // 모든 화면 이미지 캡처 추가 예정
+<p float="left">
+<img src="img src="/github.com/ZooomBiedle/WordWideWeb/assets/155615768/74f27121-738d-4e7e-9f7e-08ff9a34a236" width="200" height="430">
+
+
 
 
 ## Features
@@ -228,7 +232,6 @@ WWW
 │   └── CollectionView+Ext
 └ 
 ```
-
 
 ## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
