@@ -76,18 +76,19 @@ class InvitingVC: UIViewController {
             do {
                 self.invitationList = try await FirestoreManager.shared.fetchInvitations(for: userId)
                 self.tableview.reloadData()
+            
+                for invitation in self.invitationList {
+                    let dueDate = invitation.dueDate
+                    let id = invitation.wordbookId
+                    let title = invitation.title
+                    
+                    guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
+                    pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
+                    
+                }
             } catch {
                 print("Error fetching invitations: \(error)")
             }
-        }
-        
-        for invitation in invitationList {
-            let dueDate = invitation.dueDate
-            let id = invitation.wordbookId
-            let title = invitation.title
-            
-            guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
-            pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
         }
     }
     
