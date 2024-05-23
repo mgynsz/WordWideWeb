@@ -6,14 +6,18 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class PlayingListViewCell: UITableViewCell {
     
     var height = 80
     var listview = ListViewCell()
-    var wordList = ["API", "Frontend", "Debugging", "Bug", "Earth"]
+    var wordList: [String] = ["a"]
     var nowPplNum = 5
-    var pplNum = 10
+    var pplNum = 100
+    var wordbookId = ""
+    private var cellCount = 1
+    
     
     private let wordViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
@@ -41,7 +45,7 @@ class PlayingListViewCell: UITableViewCell {
     }()
     
     lazy var pplLabel: UILabel = {
-       let view = UILabel()
+        let view = UILabel()
         view.text = "\(nowPplNum)  /  \(pplNum)"
         view.font = UIFont.pretendard(size: 16, weight: .regular)
         return view
@@ -80,6 +84,7 @@ class PlayingListViewCell: UITableViewCell {
         
     }
     func updatePplLabel() {
+        print("updatePplLabel \(nowPplNum) / \(pplNum)")
         pplLabel.text = "\(nowPplNum) / \(pplNum)"
     }
     
@@ -111,21 +116,49 @@ class PlayingListViewCell: UITableViewCell {
         }
     }
     
-
+//    func setData(){
+//        self.joinButton.addTarget(self, action: #selector(joinBtnDidTapped), for: .touchUpInside)
+//    }
+//    
+//    @objc func joinBtnDidTapped(){
+//        //wordBook구조체의 attendee 목록에 추가
+//        guard let user = Auth.auth().currentUser else {
+//            print("No authenticated user found.")
+//            return
+//        }
+//        
+//        Task {
+//            do {
+//                let isAdded = try await FirestoreManager.shared.addAttendee(to: wordbookId, attendee: user.uid)
+//                if isAdded {
+//                    showAlert(message: "단어장 목록에 추가되었습니다.")
+//                } else {
+//                    showAlert(message: "이미 참여중인 단어장입니다.")
+//                }
+//            } catch {
+//                print("Failed to add word: \(error.localizedDescription)")
+//            }
+//        }
+//    }
+    
+    
+    
+    
     func setSelectedUI(){
         self.backgroundColor = .clear
-        
-        self.contentView.addSubview(wordView)
-        wordView.snp.makeConstraints { make in
-            make.top.equalTo(listview.snp.bottom)
-            make.height.equalTo(30)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+        if wordList.count != 0 {
+            self.contentView.addSubview(wordView)
+            wordView.snp.makeConstraints { make in
+                make.top.equalTo(listview.snp.bottom)
+                make.height.equalTo(30)
+                make.leading.equalToSuperview().offset(20)
+                make.trailing.equalToSuperview().offset(-20)
+            }
         }
         
         self.contentView.addSubview(joinButton)
         joinButton.snp.makeConstraints { make in
-            make.top.equalTo(wordView.snp.bottom).offset(10)
+            make.bottom.equalToSuperview().offset(-10)
             make.height.equalTo(30)
             make.width.equalTo(150)
             make.trailing.equalToSuperview().offset(-30)
@@ -133,7 +166,7 @@ class PlayingListViewCell: UITableViewCell {
         
         self.contentView.addSubview(pplImageView)
         pplImageView.snp.makeConstraints { make in
-            make.top.equalTo(wordView.snp.bottom).offset(10)
+            //make.top.equalToSuperview().offset(40)
             make.centerY.equalTo(joinButton.snp.centerY)
             make.height.width.equalTo(25)
             make.leading.equalToSuperview().offset(60)
@@ -141,7 +174,7 @@ class PlayingListViewCell: UITableViewCell {
         
         self.contentView.addSubview(pplLabel)
         pplLabel.snp.makeConstraints { make in
-            make.top.equalTo(wordView.snp.bottom).offset(10)
+            //make.top.equalTo(wordView.snp.bottom).offset(10)
             make.centerY.equalTo(joinButton.snp.centerY)
             make.leading.equalTo(pplImageView.snp.trailing).offset(10)
         }
@@ -157,7 +190,16 @@ class PlayingListViewCell: UITableViewCell {
 }
 extension PlayingListViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return wordList.count
+        var words = Array(wordList.prefix(cellCount)).joined(separator: " ")
+        let wordsfont = UIFont.systemFont(ofSize: 14)
+        var wordsWidth = words.size(withAttributes: [NSAttributedString.Key.font: wordsfont]).width
+        
+        while wordsWidth < 300 && cellCount < wordList.count{
+            self.cellCount += 1
+            words = Array(wordList.prefix(cellCount)).joined(separator: " ")
+            wordsWidth = words.size(withAttributes: [NSAttributedString.Key.font: wordsfont]).width + 20 + CGFloat(20 * (cellCount - 1))
+        }
+        return cellCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -176,5 +218,5 @@ extension PlayingListViewCell: UICollectionViewDelegate, UICollectionViewDataSou
         let cellWidth = textWidth + 20
         return CGSize(width: cellWidth, height: 28)
     }
-
+    
 }

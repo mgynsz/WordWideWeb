@@ -73,7 +73,7 @@ final class AuthenticationManager {
     }
     
     func saveUserToFirestore(uid: String, email: String, displayName: String?, photoURL: String?, authProvider: AuthProviderOption) async throws {
-        let user = User(uid: uid, email: email, displayName: displayName, photoURL: photoURL, socialMediaLink: nil, authProvider: authProvider)
+        let user = User(uid: uid, email: email, displayName: displayName, photoURL: photoURL, socialMediaLink: nil, authProvider: authProvider, blockCount: 0)
         try await FirestoreManager.shared.saveOrUpdateUser(user: user)
     }
 
@@ -124,7 +124,7 @@ extension AuthenticationManager {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken, accessToken: tokens.accessToken)
         let authDataResult = try await signIn(credential: credential)
         
-        let user = User(uid: authDataResult.uid, email: tokens.email ?? "", displayName: tokens.name, photoURL: tokens.photoURL, authProvider: .google)
+        let user = User(uid: authDataResult.uid, email: tokens.email ?? "", displayName: tokens.name, photoURL: tokens.photoURL, authProvider: .google, blockCount: 0)
         print("Google sign-in user: \(user)")
         try await FirestoreManager.shared.saveOrUpdateUser(user: user)
         
@@ -148,7 +148,7 @@ extension AuthenticationManager {
             UserDefaults.standard.appleDisplayName = displayName
         }
 
-        let user = User(uid: authDataResult.uid, email: email ?? "", displayName: displayName, photoURL: nil, authProvider: .apple)
+        let user = User(uid: authDataResult.uid, email: email ?? "", displayName: displayName, photoURL: nil, authProvider: .apple, blockCount: 0)
         print("Apple sign-in user: \(user)")
         try await FirestoreManager.shared.saveOrUpdateUser(user: user)
         

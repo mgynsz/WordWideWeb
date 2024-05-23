@@ -430,7 +430,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         let id = UUID().uuidString
 
         let wordbook = Wordbook(
-            id: UUID().uuidString,
+            id: id,
             ownerId: Auth.auth().currentUser!.uid,
             title: title,
             isPublic: isPublic,

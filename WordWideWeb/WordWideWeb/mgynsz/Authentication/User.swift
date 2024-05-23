@@ -15,6 +15,7 @@ struct User: Codable, Equatable {
     var photoURL: String?
     var socialMediaLink: String?
     let authProvider: AuthProviderOption
+    var blockCount: Int
     
     static func == (lhs: User, rhs: User) -> Bool {
         return lhs.uid == rhs.uid

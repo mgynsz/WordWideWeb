@@ -6,24 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class TestResultViewController: UIViewController {
     
     // MARK: - properties
     private let testView = TestResultView()
     
-    var block: [[String:String]] = [
-        ["word": "Algorithm", "definition": "A set of rules or steps to solve a problem or perform a task."],
-        ["word": "API", "definition": "Application Programming Interface - A set of rules and tools for building software applications."],
-        ["word": "Backend", "definition": "The server-side part of a web application that interacts with databases and other external systems."],
-        ["word": "Debugging", "definition": "The process of finding and fixing errors or bugs in software code."],
-        ["word": "Framework", "definition": "A reusable set of libraries or tools used to develop software applications."],
-        ["word": "IDE", "definition": "Integrated Development Environment - A software application that provides comprehensive facilities to programmers for software development."],
-        ["word": "Repository", "definition": "A storage location for software packages and version control data."],
-        ["word": "Syntax", "definition": "The set of rules that defines the combinations of symbols that are considered to be correctly structured programs in a specific programming language."],
-        ["word": "Variable", "definition": "A symbolic name that is associated with a value and whose associated value may be changed."],
-        ["word": "Bug", "definition": "An error, flaw, failure, or fault in a computer program or system that causes it to produce an incorrect or unexpected result."]
-    ]
+    var block: [[String:String]] = []
     
     var result: [Status] = []
     var wrongwordList: [String] = []
@@ -49,6 +39,8 @@ class TestResultViewController: UIViewController {
         view = self.testView
         setData()
         makeWrongWordsList()
+        print(wrongwordList)
+        updateUserBlockCount()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,30 +56,9 @@ class TestResultViewController: UIViewController {
     }
     
     @objc func okBtnDidTapped(){
-        let tabBar = UITabBarController()
-        
-        let tab1 = MyPageVC()
-        let tab2 = PlayingListVC()
-        let tab3 = DictionaryVC()
-        let tab4 = InvitingVC()
-        let tab5 = MyInfoVC()
-
-        // 탭바로 사용하기 위한 뷰 컨트롤러들 설정
-        tabBar.setViewControllers([tab1, tab2, tab3, tab4, tab5], animated: false)
+        let tabBar = TabBarController()
         tabBar.modalPresentationStyle = .fullScreen
-        tabBar.tabBar.backgroundColor = .white
-        
-        // 탭바 이미지 설정
-        guard let items = tabBar.tabBar.items else { return }
-        
-        items[0].image = UIImage(systemName: "house")
-        items[1].image = UIImage(systemName: "folder")
-        items[2].image = UIImage(systemName: "paperplane")
-        items[3].image = UIImage(systemName: "doc")
-        items[4].image = UIImage(systemName: "note")
-        
         present(tabBar, animated: true)
-        
     }
     
     func bind(status: [Status]){
@@ -113,13 +84,30 @@ class TestResultViewController: UIViewController {
     func makeWrongWordsList(){
         var index = 0
         for res in result {
+            print("res \(res)")
             if res != .right {
-                if let wrongword = block[index]["word"] {
+                if let wrongword = block[index]["term"] {
+                    print(wrongword)
                     wrongwordList.append(wrongword)
                 }
             }
             index += 1
         }
+    }
+    
+    func updateUserBlockCount(){
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found.")
+            return
+        }
+        Task{
+            do {
+                try await FirestoreManager.shared.updateWordCount(for: user.uid, blockCount: rightCount)
+            } catch {
+                throw error
+            }
+        }
+        
     }
     
 }

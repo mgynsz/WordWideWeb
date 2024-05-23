@@ -14,9 +14,9 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         FirebaseApp.configure()
@@ -42,15 +42,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
-
+    
     // MARK: UISceneSession Lifecycle
-
+    
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
         return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
     }
-
+    
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         // Called when the user discards a scene session.
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
@@ -69,26 +69,29 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     
     // 사용자가 알림 메시지를 클릭 했을 경우에 실행
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("move to testVC")
-        let wordbook = fetchWordbooks(id: response.notification.request.identifier)
- 
-        NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: ["wordbook": wordbook])
-        completionHandler()
-    }
-    
-    func fetchWordbooks(id: String) -> [Wordbook] {
-        var wordbooks: [Wordbook]?
+        print("userNotificationCenter//////")
+        
         Task {
             do {
-                print(id)
-                wordbooks = try await FirestoreManager.shared.fetchWordbooks(for: id)
-                print("wordbooks\(wordbooks)")
+                let wordbook = try await fetchWordbooks(id: response.notification.request.identifier)
+                NotificationCenter.default.post(name: Notification.Name("showPage"), object: nil, userInfo: ["wordbook": wordbook])
+                completionHandler()
             } catch {
-                print("Error fetching wordbooks: \(error.localizedDescription)")
+                print("Error receiving notification response: \(error.localizedDescription)")
+                completionHandler()
             }
         }
-        guard let result = wordbooks else {return []}
-        return result
+    }
+    
+    func fetchWordbooks(id: String) async throws -> Wordbook {
+        do {
+            let wordbooks = try await FirestoreManager.shared.fetchWordbooksById(for: id)
+            let testIntroViewController = TestIntroViewController()
+            testIntroViewController.testWordBook = wordbooks
+            return wordbooks
+        } catch {
+            throw error
+        }
     }
 }
 
