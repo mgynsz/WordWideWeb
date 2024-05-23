@@ -15,6 +15,8 @@ import FirebaseFirestore
 
 class MyInfoVC: UIViewController {
     
+    private var blockNum = 0
+    
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -31,7 +33,7 @@ class MyInfoVC: UIViewController {
     
     private let blockCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "block 1,234"
+        label.text = "block 1234"
         label.font = UIFont.pretendard(size: 14, weight: .light)
         label.textColor = .pointGreen
         return label
@@ -119,6 +121,13 @@ class MyInfoVC: UIViewController {
         viewModel.fetchUserInfo()
         viewModel.fetchSharedWordbooks()
         fetchWordbooks()
+        updateBlockCountLabel()
+    }
+    
+    private func updateBlockCountLabel() {
+        
+        
+        blockCountLabel.text = "block \(blockNum)"
     }
     
     private func bindViewModel() {
