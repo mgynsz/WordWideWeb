@@ -11,7 +11,6 @@ import SnapKit
 class MyPageModalViewController: UIViewController {
 
     var term: String = ""
-    //var receivedItem: Item = Item(word: "", pos: "", sense: [])
     
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -57,6 +56,11 @@ class MyPageModalViewController: UIViewController {
         setupViews()
         
         closeButton.addTarget(self, action: #selector(returnWord), for: .touchUpInside)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: .modalDismissed, object: nil)
     }
     
     @objc func returnWord() {
