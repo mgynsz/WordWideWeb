@@ -13,15 +13,13 @@ public struct LaunchView: View {
     let words: [String]
     
     public init() {
-        self.words = "Labyrinth,Ineffable,Incendiary,Ephemeral,Cynosure,Propinquity,Infatuation,Incandescent,Eudaemonia,Raconteur,Petrichor,Sumptuous,Aesthete,Nadir,Miraculous,Lassitude,Gossamer,Bungalow,Aurora,Inure,Mellifluous,Euphoria,Cherish,Demure,Elixir,Eternity,Felicity,Languor,Love,Solitude,Epiphany,Quintessential,Plethora,Nemesis,Lithe,Tranquility,Elegance,Renaissance,Eloquence,Sequoia,Peace,Lullaby,Paradox,Pristine,Effervescent,Opulence,Ethereal,Sanguine,Panacea,Bodacious,Axiom,Silhouette,Surreptitious,Ingenue,Dulcet,Tryst,Ebullience".components(separatedBy: ",")
+        self.words =  "Hello,World,Swift,Programming,Apple,Code,Develop,App,Design,Function,Variable,Constant,Array,Dictionary,String,Int,Double,Float,Bool,Class,Struct,Enum,Protocol,Extension,Framework,Library,Package,Manager,Xcode,Simulator,Interface,Builder,Preview,Playground,Project,File,Folder,Commit,Push,Pull,Merge,Branch,Debug,Release,Profile,Test,Deploy,Version,Control,Git,Repository,Clone,Fetch".components(separatedBy: ",")
         self._positions = State(initialValue: Array(repeating: .zero, count: words.count))
     }
     
     public var body: some View {
         ZStack {
             GeometryReader { proxy in
-                let midX = proxy.size.width / 2.0
-                let midY = proxy.size.height / 2.0
                 ZStack {
                     Color.clear
                     ForEach(Array(self.words.enumerated()), id: \.offset) { index, word in
@@ -37,22 +35,25 @@ public struct LaunchView: View {
                 }
                 .onAppear {
                     for index in 0..<positions.count {
-                        positions[index] = CGPoint(x: midX, y: midY)
+                        positions[index] = CGPoint(x: CGFloat.random(in: 0...proxy.size.width),
+                                                   y: CGFloat.random(in: 0...proxy.size.height))
                     }
                 }
             }
         }
+        .background(Color.bg)
     }
     
     private func moveWord(index: Int, in size: CGSize) {
-        withAnimation(Animation.linear(duration: Double.random(in: 3...6)).repeatForever(autoreverses: true)) {
+        withAnimation(Animation.linear(duration: Double.random(in: 4...6)).repeatForever(autoreverses: true)) {
             positions[index] = CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height))
         }
     }
 }
 
-struct RandomAnimateText_Previews: PreviewProvider {
+struct LaunchView_Previews: PreviewProvider {
     static var previews: some View {
         LaunchView()
     }
 }
+

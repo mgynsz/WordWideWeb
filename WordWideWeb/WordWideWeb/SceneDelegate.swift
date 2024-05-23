@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -15,10 +16,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
-
         self.window = window
-        setRootViewController()
+
+        // SwiftUI LaunchView 설정
+        let launchView = LaunchView()
+        let hostingController = UIHostingController(rootView: launchView)
+
+        window.rootViewController = hostingController
         window.makeKeyAndVisible()
+
+        // 일정 시간 후 루트 뷰 컨트롤러 변경
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.setRootViewController()
+        }
     }
     
     func setRootViewController() {
