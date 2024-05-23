@@ -27,79 +27,12 @@
 
 ## Timeline
 
-<details>
-   <summary>24.05.13</summary>
-    <pre>● Project 아이디어 회의
-    ○ 컨셉 논의, 역할 분담, 와이어프레임 구성
 
-</details>
-
-<details>
-    <pre>● 소셜 로그인 페이지 구현
-    ○ Sign in / Sign up 기능 및 페이지 구현
-
-<details>
-   <summary>24.05.15</summary>
-    <pre>● 계정 정보 저장(backend) 기능 구현
-● Firebase 구축
-    </pre>
-</details>
-
-<details>
-   <summary>24.05.16</summary>
-   <pre>● 전체적인 Flow 및 핵심 기능 확정
-
-   </pre>
-</details>
-
-<details>
-   <summary>24.05.17</summary>
-   <pre>● 친구 초대 페이지 생성
-● 친구 초대 페이지 생성
-   </pre>
-</details>
-
-<details>
-   <summary>24.05.18</summary>
-   <pre>● 단어장에 친구 초대 기능 구현
-    ● 전체적인 디자인 및 컬러 변경
-   </pre>
-</details>    
-
-<details>
-   <summary>24.05.21</summary>
-   <pre>● 단어 테스트 기능 구현 
-      ● 네트워크 매니저 구현
-      ● API 호출 결과 바인팅
-   </pre>
-</details>    
-
-<details>
-   <summary>24.05.22</summary>
-   <pre>● 네트워크 매니저 구현
-      ● API 호출 결과 바인딩
-   </pre>
-</details>    
-
-<details>
-   <summary>24.05.23</summary>
-   <pre>● 초대 요청을 받은 친구 알람 기능 구현
-   </pre>
-</details>   
-
-<details>
-   <summary>24.05.24</summary>
-   <pre>● 최종 점검 (UI 디테일 및 파일명, 디자인 패턴 점검 등)
-● ReadMe 작성
-   </pre>
-</details> 
 
 ## Demo
 // 모든 화면 이미지 캡처 추가 예정
 <p float="left">
 <img src="img src="/github.com/ZooomBiedle/WordWideWeb/assets/155615768/74f27121-738d-4e7e-9f7e-08ff9a34a236" width="200" height="430">
-
-
 
 
 ## Features
