@@ -33,21 +33,37 @@ class PlayingListVC: UIViewController {
         self.view.endEditing(true)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadDataForResult()
+    }
+    
     // MARK: - method
     func setData(){
         playlistView.resultView.dataSource = self
         playlistView.resultView.delegate = self
         playlistView.resultView.register(PlayingListViewCell.self, forCellReuseIdentifier: "PlayingListViewCell")
-        
-        playlistView.searchBar.delegate = self
-        
+ 
     }
     
-    func setDataForTrending(){
+    private func filterData(){
+        wordBooks = wordBooks.filter { $0.attendees.count < $0.maxAttendees }
+        let currentDate = Date()
+        wordBooks = wordBooks.filter {
+            guard let dueDateTimestamp = $0.dueDate else {
+                return false
+            }
+            let dueDate = dueDateTimestamp.dateValue()
+            return dueDate > currentDate
+        }
+    }
+    
+    private func setDataForTrending(){
         Task {
             do {
                 self.wordBooks = try await FirestoreManager.shared.fetchAllWordbooks()
-                self.wordBooks.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() } // 생성 날짜로 정렬
+                self.wordBooks.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() }
+                filterData() // 생성 날짜로 정렬
                 self.playlistView.resultView.reloadData()
             } catch {
                 print("Error fetching wordbooks: \(error.localizedDescription)")
@@ -55,11 +71,12 @@ class PlayingListVC: UIViewController {
         }
     }
     
-    func setDataForSearchWord(keyword: String){
+    private func setDataForSearchWord(keyword: String){
         Task {
             do {
                 self.wordBooks = try await FirestoreManager.shared.fetchWordbooksByTitle(for: keyword)
-                self.wordBooks.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() } // 생성 날짜로 정렬
+                self.wordBooks.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() }
+                filterData()
                 self.playlistView.resultView.reloadData()
             } catch {
                 print("Error fetching wordbooks: \(error.localizedDescription)")
@@ -67,11 +84,11 @@ class PlayingListVC: UIViewController {
         }
     }
     
-    func setUI(){
+    private func setUI(){
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
-    func setBtn(){
+    private func setBtn(){
         let popUpButtonClosure = { [self] (action: UIAction) in
             if action.title == "생성순" {
                 print("생성순")
@@ -104,14 +121,14 @@ class PlayingListVC: UIViewController {
         playlistView.filterBtn.changesSelectionAsPrimaryAction = true
     }
     
-    func convertTimestampToString(timestamp: Timestamp?) -> String {
+    private func convertTimestampToString(timestamp: Timestamp?) -> String {
         guard let timestamp = timestamp else {
             return "No Date" // 타임스탬프가 nil일 경우 처리
         }
         
         let date = timestamp.dateValue() // Timestamp를 Date로 변환
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd HH:mm:ss" // 날짜 형식 설정
+        dateFormatter.dateFormat = "yyyy.MM.dd h:mm a" // 날짜 형식 설정
         
         return dateFormatter.string(from: date) // Date를 문자열로 변환하여 반환
     }
@@ -131,7 +148,7 @@ class PlayingListVC: UIViewController {
         joinWordBook(for: wordbookId)
     }
     
-    func joinWordBook(for wordbookId: String){
+    private func joinWordBook(for wordbookId: String){
         guard let user = Auth.auth().currentUser else {
             print("No authenticated user found.")
             return
@@ -291,9 +308,9 @@ extension PlayingListVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let selectedIndexPath = tableView.indexPathForSelectedRow, selectedIndexPath == indexPath {
             if wordBooks[indexPath.row].words.count == 0 {
-                return 110
+                return 120
             } else {
-                return 160
+                return 170
             }
         } else {
             return 80

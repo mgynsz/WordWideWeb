@@ -69,32 +69,31 @@ class PlayingListView: UIView{
     private func setUI(){
         customComponent()
         self.backgroundColor = .bg
-        self.addSubview(topImageLabel)
-        topImageLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            make.leading.equalToSuperview().offset(20)
-            make.height.width.equalTo(28)
-        }
-        
+     
         self.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            make.leading.equalTo(topImageLabel.snp.trailing).offset(3)
-            make.height.equalTo(28)
-            make.width.equalTo(100)
+            make.top.equalToSuperview().offset(80)
+            make.leading.equalToSuperview().offset(60)
+        }
+ 
+        self.addSubview(topImageLabel)
+        topImageLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.centerY.equalTo(topLabel.snp.centerY)
+            make.width.height.equalTo(28)
         }
         
         self.addSubview(searchBar)
         searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
-            make.leading.equalToSuperview().offset(30)
+            make.top.equalTo(topLabel.snp.bottom).offset(24)
+            make.leading.equalTo(self.safeAreaLayoutGuide).offset(20)
             make.height.equalTo(50)
             make.width.equalTo(290)
         }
         
         self.addSubview(filterBtn)
         filterBtn.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(120)
+            make.top.equalTo(topLabel.snp.bottom).offset(24)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(50)
             make.width.equalTo(50)

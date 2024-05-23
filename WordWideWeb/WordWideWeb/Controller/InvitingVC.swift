@@ -54,7 +54,7 @@ class InvitingVC: UIViewController {
         
         topLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(80)
-            make.leading.equalToSuperview().offset(63)
+            make.leading.equalToSuperview().offset(60)
         }
         
         topLogo.snp.makeConstraints { make in

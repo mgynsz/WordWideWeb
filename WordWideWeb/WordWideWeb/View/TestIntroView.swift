@@ -141,15 +141,15 @@ class TestIntroView: UIView {
         
         self.addSubview(topImageLabel)
         topImageLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
+            make.top.equalToSuperview().offset(80)
             make.leading.equalToSuperview().offset(20)
             make.height.width.equalTo(28)
         }
         
         self.addSubview(topLabel)
         topLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.safeAreaLayoutGuide.snp.top)
-            make.leading.equalTo(topImageLabel.snp.trailing).offset(3)
+            make.top.equalToSuperview().offset(80)
+            make.leading.equalTo(topImageLabel.snp.trailing).offset(12)
             make.height.equalTo(28)
             make.width.equalTo(100)
         }
@@ -190,10 +190,10 @@ class TestIntroView: UIView {
         self.titleLabel.text = title
         self.quizNumLabel.text = String(blockCount)
         
-        //1문제당 1분
+        //1문제당 10초
         var dateComponents = DateComponents()
-        dateComponents.minute = blockCount
-        dateComponents.second = 0
+        dateComponents.minute = 0
+        dateComponents.second = blockCount * 10
         
         let userCalendar = Calendar.current
         if let specificDate = userCalendar.date(from: dateComponents) {
