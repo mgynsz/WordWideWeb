@@ -204,6 +204,14 @@ final class FirestoreManager {
         ])
     }
     
+    func fetchSharedWordbooks(for userId: String) async throws -> [Wordbook] {
+        let querySnapshot = try await db.collection("wordbooks")
+            .whereField("attendees", arrayContains: userId)
+            .getDocuments()
+        
+        return querySnapshot.documents.compactMap { try? $0.data(as: Wordbook.self) }
+    }
+    
     //    // 공통 문서 가져오기 메서드
     //    private func fetchDocument(collection: String, documentID: String) async throws -> DocumentSnapshot {
     //        let document = try await db.collection(collection).document(documentID).getDocument()
