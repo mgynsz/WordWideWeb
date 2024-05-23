@@ -11,7 +11,7 @@ class BlockCell: UICollectionViewCell {
     
     static let identifier = "BlockCell"
     
-    private let term: UILabel = {
+    let term: UILabel = {
         let term = UILabel()
         term.textColor = .black
         term.font = UIFont.pretendard(size: 14, weight: .semibold)

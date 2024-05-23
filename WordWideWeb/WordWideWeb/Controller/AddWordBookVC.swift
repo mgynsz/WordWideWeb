@@ -426,6 +426,8 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         attendees.append(contentsOf: invitedFriends.map { $0.uid })
         
         let maxAttendees = Int(attendeesStepper.value)
+        
+        let id = UUID().uuidString
 
         let wordbook = Wordbook(
             id: id,

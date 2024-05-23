@@ -16,60 +16,7 @@ class PlayingListVC: UIViewController {
     private var searchWord: String = ""
     private var wordTerms: [Word] = []
     
-    var wordBooks: [Wordbook] = [
-        Wordbook(
-            id: "1",
-            ownerId: "owner123",
-            title: "Swift Programming Basics",
-            isPublic: true,
-            dueDate: Timestamp(date: Date().addingTimeInterval(604800)), // 1 week from now
-            createdAt: Timestamp(date: Date().addingTimeInterval(-604800)), // 1 week ago
-            attendees: ["user1", "user2", "user3"],
-            sharedWith: ["user4", "user5"],
-            colorCover: "blue",
-            wordCount: 2,
-            words: [
-                Word(id: "w1", term: "Variable", definition: "A storage location paired with an associated symbolic name."),
-                Word(id: "w2", term: "Function", definition: "A block of code that performs a specific task.")
-            ],
-            maxAttendees: 4
-        ),
-        Wordbook(
-            id: "2",
-            ownerId: "owner456",
-            title: "Advanced iOS Development",
-            isPublic: false,
-            dueDate: nil, // No due date
-            createdAt: Timestamp(date: Date().addingTimeInterval(-2592000)), // 1 month ago
-            attendees: ["user6", "user7"],
-            sharedWith: ["user8"],
-            colorCover: "red",
-            wordCount: 2,
-            words: [
-                Word(id: "w3", term: "Closure", definition: "A self-contained block of functionality that can be passed around and used in your code."),
-                Word(id: "w4", term: "Protocol", definition: "A blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality."),
-                Word(id: "w5", term: "Algorithm", definition: "A process or set of rules to be followed in calculations or other problem-solving operations."),
-                Word(id: "w6", term: "Data Structure", definition: "A particular way of organizing and storing data in a computer so that it can be accessed and modified efficiently.")
-            ]
-        ),
-        Wordbook(
-            id: "3",
-            ownerId: "owner789",
-            title: "Introduction to Algorithms",
-            isPublic: true,
-            dueDate: Timestamp(date: Date().addingTimeInterval(1209600)), // 2 weeks from now
-            createdAt: Timestamp(date: Date()), // Now
-            attendees: ["user9", "user10", "user11"],
-            sharedWith: nil,
-            colorCover: "green",
-            wordCount: 2,
-            words: [
-                Word(id: "w5", term: "Algorithm", definition: "A process or set of rules to be followed in calculations or other problem-solving operations."),
-                Word(id: "w6", term: "Data Structure", definition: "A particular way of organizing and storing data in a computer so that it can be accessed and modified efficiently.")
-            ],
-            maxAttendees: 3
-        )
-    ]
+    var wordBooks: [Wordbook] = [ ]
     
     // MARK: - lifecycle
     override func viewDidLoad() {
