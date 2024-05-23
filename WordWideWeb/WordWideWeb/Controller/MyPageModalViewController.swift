@@ -59,6 +59,11 @@ class MyPageModalViewController: UIViewController {
         closeButton.addTarget(self, action: #selector(returnWord), for: .touchUpInside)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.post(name: .modalDismissed, object: nil)
+    }
+    
     @objc func returnWord() {
         self.dismiss(animated: true)
     }
