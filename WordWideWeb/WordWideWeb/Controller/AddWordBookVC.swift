@@ -478,7 +478,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         }
     }
     
-    func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
+    private func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
         guard let timestamp = timestamp else { return nil }
         
         let date = Date(timeIntervalSince1970: TimeInterval(timestamp.seconds))
