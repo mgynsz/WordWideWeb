@@ -103,29 +103,30 @@ class MyPageCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(vStackView.snp.height).multipliedBy(0.4)
         }
         
-        self.addSubview(wordButton)
-        wordButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(30)
-            make.leading.equalToSuperview().offset(20)
-        }
+//        self.addSubview(wordButton)
+//        wordButton.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(30)
+//            make.leading.equalToSuperview().offset(20)
+//        }
         
         self.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(290)
             make.leading.equalToSuperview().offset(20)
         }
-        
-        self.addSubview(nameLabel)
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(335)
-            make.leading.equalToSuperview().offset(55)
-        }
-        
+
         self.addSubview(profileImage) // 위치 + "크기"
         profileImage.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(333)
             make.leading.equalToSuperview().offset(20)
             make.height.width.equalTo(26)
+        }
+        
+        self.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(profileImage.snp.centerY)
+            //make.top.equalToSuperview().offset(335)
+            make.leading.equalToSuperview().offset(55)
         }
     }
     

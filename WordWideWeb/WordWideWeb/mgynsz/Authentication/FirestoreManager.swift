@@ -198,10 +198,16 @@ final class FirestoreManager {
     
     // 사용자 blockCount 업데이트
     func updateWordCount(for userId: String, blockCount: Int) async throws {
-        //let wordCount = try await fetchWordCount(for: wordbookId)
-        try await db.collection("users").document(userId).updateData([
-            "blockCount": blockCount
-        ])
+        print("updateWordcount")
+        do{
+                try await db.collection("users").document(userId).updateData([
+                    "blockCount": blockCount
+                ])
+                print("Word count updated successfully")
+            } catch {
+                print("Failed to update word count: \(error.localizedDescription)")
+                throw error
+            }
     }
     
     func fetchSharedWordbooks(for userId: String) async throws -> [Wordbook] {

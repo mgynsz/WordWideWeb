@@ -12,6 +12,7 @@ class TestResultViewController: UIViewController {
     
     // MARK: - properties
     private let testView = TestResultView()
+    var testResultWordbookId: String = ""
     
     var block: [[String:String]] = []
     
@@ -39,7 +40,6 @@ class TestResultViewController: UIViewController {
         view = self.testView
         setData()
         makeWrongWordsList()
-        print(wrongwordList)
         updateUserBlockCount()
     }
     
@@ -58,7 +58,20 @@ class TestResultViewController: UIViewController {
     @objc func okBtnDidTapped(){
         let tabBar = TabBarController()
         tabBar.modalPresentationStyle = .fullScreen
+        //해당 단어장 삭제
+        deleteWordbook()
         present(tabBar, animated: true)
+    }
+    
+    private func deleteWordbook(){
+        Task {
+            do {
+                try await FirestoreManager.shared.deleteWordbook(withId: testResultWordbookId)
+                //fetchWordbooks() // 삭제 후 단어장 목록 갱신
+            } catch {
+                print("Error deleting wordbook: \(error.localizedDescription)")
+            }
+        }
     }
     
     func bind(status: [Status]){
@@ -102,7 +115,12 @@ class TestResultViewController: UIViewController {
         }
         Task{
             do {
-                try await FirestoreManager.shared.updateWordCount(for: user.uid, blockCount: rightCount)
+                let userInfo = try await FirestoreManager.shared.fetchUser(uid: user.uid)
+                let blockNum = userInfo?.blockCount
+                if let blocknum = blockNum {
+                    var updateCount = blocknum + rightCount
+                    try await FirestoreManager.shared.updateWordCount(for: user.uid, blockCount: updateCount)
+                }
             } catch {
                 throw error
             }

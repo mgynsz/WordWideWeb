@@ -27,7 +27,7 @@ class MyInfoVC: UIViewController {
     
     private let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.pretendard(size: 18, weight: .regular)
+        label.font = UIFont.pretendard(size: 20, weight: .regular)
         return label
     }()
     
@@ -130,7 +130,22 @@ class MyInfoVC: UIViewController {
     }
     
     private func updateBlockCountLabel() {
-        blockCountLabel.text = "block \(blockNum)"
+
+        guard let user = Auth.auth().currentUser else {
+            print("No authenticated user found.")
+            return
+        }
+        Task {
+            do {
+                let userInfo = try await FirestoreManager.shared.fetchUser(uid: user.uid)
+                let blockNum = userInfo?.blockCount
+                if let block = blockNum {
+                    blockCountLabel.text = "block \(block)"
+                }
+            } catch {
+                print("Error fetching wordbooks: \(error.localizedDescription)")
+            }
+        }
     }
     
     private func bindViewModel() {
@@ -208,13 +223,13 @@ class MyInfoVC: UIViewController {
         }
         
         nicknameLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.top).offset(24)
+            make.top.equalTo(profileImageView.snp.top).offset(20)
             make.leading.equalTo(profileImageView.snp.trailing).offset(20)
         }
         
         blockCountLabel.snp.makeConstraints { make in
             make.bottom.equalTo(profileImageView.snp.bottom).offset(-4)
-            make.leading.equalTo(profileImageView.snp.trailing).offset(20)
+            make.leading.equalTo(profileImageView.snp.trailing).offset(21)
         }
         
         instagramIcon.snp.makeConstraints { make in

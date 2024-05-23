@@ -80,9 +80,9 @@ class PlayingListViewCell: UITableViewCell {
         } else {
             setUnselectedUI()
         }
-        
     }
-    func updatePplLabel() {
+    
+    private func updatePplLabel() {
         print("updatePplLabel \(nowPplNum) / \(pplNum)")
         pplLabel.text = "\(nowPplNum) / \(pplNum)"
     }
@@ -104,7 +104,7 @@ class PlayingListViewCell: UITableViewCell {
         listview.titleLabel.text = "제목"
     }
     
-    func setUI(){
+    private func setUI(){
         self.backgroundColor = .clear
         
         self.contentView.addSubview(listview)
@@ -113,42 +113,16 @@ class PlayingListViewCell: UITableViewCell {
             make.height.equalTo(80)
             make.width.equalToSuperview()
         }
+        
+        listview.imageLabel.layer.cornerRadius = 25
     }
-    
-//    func setData(){
-//        self.joinButton.addTarget(self, action: #selector(joinBtnDidTapped), for: .touchUpInside)
-//    }
-//    
-//    @objc func joinBtnDidTapped(){
-//        //wordBook구조체의 attendee 목록에 추가
-//        guard let user = Auth.auth().currentUser else {
-//            print("No authenticated user found.")
-//            return
-//        }
-//        
-//        Task {
-//            do {
-//                let isAdded = try await FirestoreManager.shared.addAttendee(to: wordbookId, attendee: user.uid)
-//                if isAdded {
-//                    showAlert(message: "단어장 목록에 추가되었습니다.")
-//                } else {
-//                    showAlert(message: "이미 참여중인 단어장입니다.")
-//                }
-//            } catch {
-//                print("Failed to add word: \(error.localizedDescription)")
-//            }
-//        }
-//    }
-    
-    
-    
-    
-    func setSelectedUI(){
+
+    private func setSelectedUI(){
         self.backgroundColor = .clear
         if wordList.count != 0 {
             self.contentView.addSubview(wordView)
             wordView.snp.makeConstraints { make in
-                make.top.equalTo(listview.snp.bottom)
+                make.top.equalTo(listview.snp.bottom).offset(5)
                 make.height.equalTo(30)
                 make.leading.equalToSuperview().offset(20)
                 make.trailing.equalToSuperview().offset(-20)
@@ -157,7 +131,7 @@ class PlayingListViewCell: UITableViewCell {
         
         self.contentView.addSubview(joinButton)
         joinButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-10)
+            make.bottom.equalToSuperview().offset(-15)
             make.height.equalTo(30)
             make.width.equalTo(150)
             make.trailing.equalToSuperview().offset(-30)
@@ -179,7 +153,7 @@ class PlayingListViewCell: UITableViewCell {
         }
     }
     
-    func setUnselectedUI(){
+    private func setUnselectedUI(){
         wordView.removeFromSuperview()
         joinButton.removeFromSuperview()
         pplImageView.removeFromSuperview()
