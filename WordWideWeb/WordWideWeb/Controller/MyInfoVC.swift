@@ -100,7 +100,7 @@ class MyInfoVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "bgColor")
         
-        navigationController?.setNavigationBarHidden(true, animated: false)
+//        navigationController?.setNavigationBarHidden(true, animated: false)
         
         setupViews()
         setupCollectionView()
@@ -112,10 +112,14 @@ class MyInfoVC: UIViewController {
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .userProfileUpdated, object: nil)
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("\(self) deallocated")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: false)
         viewModel.fetchUserInfo()
         viewModel.fetchSharedWordbooks()
         fetchWordbooks()
@@ -133,10 +137,16 @@ class MyInfoVC: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] url in
                 guard let self = self else { return }
-                if let url = url {
-                    self.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "person.crop.circle"))
+                // 캐싱된 이미지를 먼저 확인
+                if let cachedImage = SDImageCache.shared.imageFromCache(forKey: url?.absoluteString) {
+                    self.profileImageView.image = cachedImage
                 } else {
-                    self.profileImageView.image = UIImage(systemName: "person.crop.circle")
+                    // 캐싱된 이미지가 없으면 다운로드
+                    self.profileImageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "person.crop.circle"), options: .continueInBackground, completed: { image, error, cacheType, imageURL in
+                        if error != nil {
+                            print("Failed to load image: \(String(describing: error?.localizedDescription))")
+                        }
+                    })
                 }
             }
             .store(in: &cancellables)
@@ -310,9 +320,11 @@ class MyInfoVC: UIViewController {
         Task {
             do {
                 let userId = user.uid
-                self.wordbooks = try await FirestoreManager.shared.fetchWordbooks(for: userId)
-                self.wordbooks.sort { $0.createdAt.dateValue() > $1.createdAt.dateValue() } // 생성 날짜로 정렬
-                self.collectionView.reloadData()
+                let wordbooks = try await FirestoreManager.shared.fetchWordbooks(for: userId)
+                DispatchQueue.main.async {
+                    self.wordbooks = wordbooks.sorted { $0.createdAt.dateValue() > $1.createdAt.dateValue() } // 생성 날짜로 정렬
+                    self.collectionView.reloadData()
+                }
             } catch {
                 print("Error fetching wordbooks: \(error.localizedDescription)")
             }
@@ -324,7 +336,11 @@ class MyInfoVC: UIViewController {
         Task {
             do {
                 try await FirestoreManager.shared.deleteWordbook(withId: wordbook.id)
-                fetchWordbooks() // 삭제 후 단어장 목록 갱신
+                // 단어장 삭제 후 목록을 다시 불러오지 않고 직접 제거
+                DispatchQueue.main.async {
+                    self.wordbooks.removeAll { $0.id == wordbook.id }
+                    self.collectionView.reloadData()
+                }
             } catch {
                 print("Error deleting wordbook: \(error.localizedDescription)")
             }
