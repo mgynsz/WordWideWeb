@@ -84,35 +84,6 @@ class InvitingVC: UIViewController {
 //            tableView.reloadData()
 //        }
     
-//    private func map(_ users: [User], _ wordbooks: [Wordbook], _ words: [Word]) -> [InvitationData] {
-//        items.reduce(into: [invitationList]()) { acc, wordbook in
-//            let models = wordbook.map {
-//                InvitationData(id: wordbook.id, ownerId: wordbook.ownerId, title: wordbook.title, dueDate: wordbook.dueDate, createdAt: wordbook.createdAt)
-//            }
-//            acc.append(models)
-//        }
-//        
-//        var invitationDatas: [InvitationData] = []
-//        
-//        for user in users {
-//            let filtered = wordbooks.filter {
-//                $0.ownerId == user.uid
-//            }
-//            for wordbook in filtered {
-//                for w in wordbook.wordIDList {
-//                    let filteredWords = words.filter {
-//                        $0.id == w
-//                    }
-//                    for f in filteredWords {
-//                        InvitationData(id: <#T##String#>, ownerId: user.uid, photoURL: <#T##String?#>, title: <#T##String#>, dueDate: <#T##String#>, createdAt: <#T##String#>, words: <#T##[String]#>)
-//                        invitationDatas.append(<#T##newElement: InvitationData##InvitationData#>)
-//                    }
-//                }
-//            }
-//        }
-//        return invitationDatas
-//    }
-    
 }
     
     

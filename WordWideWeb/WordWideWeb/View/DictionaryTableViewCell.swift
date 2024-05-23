@@ -98,7 +98,7 @@ class DictionaryTableViewCell: UITableViewCell {
             let label = UILabel()
             label.numberOfLines = 0
             label.text = "\(senseElement.senseOrder). \(item.pos)  \(senseElement.transWord)"
-            
+
             stackview.addArrangedSubview(label)
         }
     }

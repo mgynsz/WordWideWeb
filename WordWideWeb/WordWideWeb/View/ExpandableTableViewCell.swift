@@ -63,6 +63,7 @@ class ExpandableTableViewCell: UITableViewCell {
             label.backgroundColor = .white
             label.layer.cornerRadius = 8
             label.font = .pretendard(size: 12, weight: .regular)
+            setWidth(label: label)
             wordLabels.append(label)
         }
     }
@@ -122,5 +123,13 @@ class ExpandableTableViewCell: UITableViewCell {
     
     @objc func acceptButtonTapped() {
         acceptButtonAction()
+    }
+    
+    private func setWidth(label: UILabel) {
+        guard let text = label.text else { return }
+        let font = UIFont.systemFont(ofSize: 14)
+        let textWidth = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: font]).width
+        let cellWidth = textWidth + 20
+        label.frame.size =  CGSize(width: cellWidth, height: 28)
     }
 }

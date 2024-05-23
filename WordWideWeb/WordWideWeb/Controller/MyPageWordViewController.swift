@@ -11,12 +11,15 @@ import SnapKit
 // 단어카드 다음페이지 : 단어 리스트 페이지
 class MyPageWordViewController: UIViewController, UIViewControllerTransitioningDelegate {
 
-    var wordBook: Wordbook?
+    var bookID: String = ""
+    var wordsList: [Word] = []
     
     private let wordViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 20
+        layout.scrollDirection = .vertical
+        layout.minimumLineSpacing = 10
+        layout.minimumInteritemSpacing = 30
+        
         return layout
     }()
     
@@ -27,6 +30,7 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.allowsMultipleSelection = false
         
         return collectionView
     }()
@@ -37,7 +41,24 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
         view.backgroundColor = UIColor(named: "bgColor")
         
         setCollectionView()
-        getWords()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
+    
+    private func fetchData() {
+        Task {
+            do {
+                let words = try await FirestoreManager.shared.fetchWords(for: bookID)
+                self.wordsList.removeAll()
+                self.wordsList.append(contentsOf: words)
+                wordsCollecView.reloadData()
+            } catch {
+                print("Error fetching words")
+            }
+        }
     }
     
     private func setCollectionView() {
@@ -51,51 +72,28 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
         }
     }
     
-    
-    private func pullUpDfn() {
-        let myPageModalVC = MyPageModalViewController()
-        myPageModalVC.modalPresentationStyle = .formSheet
-        if let sheet = myPageModalVC.sheetPresentationController {
-            sheet.detents = [.medium()]
-        }
-        self.present(myPageModalVC, animated: true)
-    }
- 
-    // 단어장 데이터 가져오기
-    private func getWords() {
-        let senderVC = MyPageVC()
-        senderVC.addWordbookClosure = { data in
-            self.wordBook = data
-            print("received wordbook: \(String(describing: self.wordBook))")
-        }
-    }
 }
 
 
-extension MyPageWordViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MyPageWordViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let wordCount = wordBook?.wordCount else { return 1 }
-        return wordCount
+        return wordsList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BlockCell", for: indexPath) as! BlockCell
         
-        guard let term = wordBook?.words[indexPath.item].term else { return BlockCell() }
-        cell.bind(text: term)   // 내가 클릭한 단어장의 단어 불러와야
+        let text = wordsList[indexPath.item].term
+        cell.bind(text: text)   // 내가 클릭한 단어장의 단어 불러와야
         cell.term.font = UIFont.pretendard(size: 14, weight: .semibold)
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 5
         
-//        let tapped = UITapGestureRecognizer(target: self, action: #selector(wordBlockTapped))
-//        cell.addGestureRecognizer(tapped)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard let text = wordBook?.words[indexPath.item].term else {
-                    return CGSize(width: 50, height: 28) // 기본 사이즈, 텍스트가 없을 경우
-                }
+        let text = wordsList[indexPath.item].term
         let font = UIFont.systemFont(ofSize: 14)
         let textWidth = (text as NSString).size(withAttributes: [NSAttributedString.Key.font: font]).width
         let cellWidth = textWidth + 20
@@ -103,10 +101,27 @@ extension MyPageWordViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let term = wordBook?.words[indexPath.item].term else { return }
-        MyPageModalViewController().term = term
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BlockCell", for: indexPath) as! BlockCell
+        cell.backgroundColor = .black
+        cell.term.textColor = .white
         
-        pullUpDfn()
+        let myPageModalVC = MyPageModalViewController()
+        let text = wordsList[indexPath.item].term
+    
+        myPageModalVC.term = text
+        print("received text: ", myPageModalVC.term)
+        myPageModalVC.modalPresentationStyle = .formSheet
+        if let sheet = myPageModalVC.sheetPresentationController {
+            sheet.detents = [.medium()]
+        }
+        self.present(myPageModalVC, animated: true)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? BlockCell else { return }
+        
+        cell.backgroundColor = .white
+        cell.term.textColor = .black
     }
     
 }

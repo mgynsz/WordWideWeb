@@ -301,7 +301,7 @@ final class FirestoreManager {
     }
     
     // 단어들을 가져오는 메서드
-    private func fetchWords(for wordbookId: String) async throws -> [Word] {
+    func fetchWords(for wordbookId: String) async throws -> [Word] {      // private 삭제
         let snapshot = try await db.collection("wordbooks").document(wordbookId).collection("words").getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Word.self) }
     }

@@ -30,7 +30,6 @@ class MyPageVC: UIViewController {
         return button
     }()
     
-    
     // 단어장 카드 collectionView
     var collection: UICollectionView = {
         let layout = CarouselLayout()
@@ -47,7 +46,7 @@ class MyPageVC: UIViewController {
     }()
     
     var wordbookList = [(Wordbook, User)]()
-    var addWordbookClosure: ((Wordbook) -> Void) = {_ in }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,13 +146,15 @@ extension MyPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
         
         let (wordbook, user) = wordbookList[indexPath.row]
         cell.configure(with: wordbook, user: user)
+        print("단어 확인: \(wordbook)")
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        addWordbookClosure(wordbookList[indexPath.row].0)
         let myPageWordVC = MyPageWordViewController()
+        myPageWordVC.bookID = wordbookList[indexPath.row].0.id
+        print(wordbookList[indexPath.row].0)
         present(myPageWordVC, animated: true, completion: nil)
     }
 }

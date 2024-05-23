@@ -94,6 +94,7 @@ class MyInfoVC: UIViewController {
     private var wordbooks: [Wordbook] = []
     private var isPublicView: Bool = true
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "bgColor")
@@ -401,6 +402,13 @@ extension MyInfoVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         let collectionViewSize = collectionView.frame.size.width - padding
         let cellWidth = collectionViewSize / 2 - padding
         return CGSize(width: cellWidth, height: cellWidth)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let myPageWordVC = MyPageWordViewController()
+        myPageWordVC.bookID = wordbooks[indexPath.item].id
+        print("단어장ID: ", wordbooks[indexPath.item].id )
+        present(myPageWordVC, animated: true, completion: nil)
     }
 }
 
