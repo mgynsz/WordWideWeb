@@ -248,6 +248,23 @@ final class FirestoreManager {
     }
     
     // 단어장 가져오기
+//    func fetchWordbooks(for userId: String) async throws -> [Wordbook] {
+//        let querySnapshot = try await db.collection("wordbooks")
+//            .whereField("ownerId", isEqualTo: userId)
+//            .getDocuments()
+//        
+//        var wordbooks: [Wordbook] = []
+//        
+//        for document in querySnapshot.documents {
+//            var wordbook = try document.data(as: Wordbook.self)
+//            let wordCount = try await fetchWordCount(for: wordbook.id)
+//            wordbook.wordCount = wordCount
+//            wordbooks.append(wordbook)
+//        }
+//        
+//        return wordbooks
+//    }
+    
     func fetchWordbooks(for userId: String) async throws -> [Wordbook] {
         let querySnapshot = try await db.collection("wordbooks")
             .whereField("ownerId", isEqualTo: userId)
@@ -255,15 +272,26 @@ final class FirestoreManager {
         
         var wordbooks: [Wordbook] = []
         
-        for document in querySnapshot.documents {
-            var wordbook = try document.data(as: Wordbook.self)
-            let wordCount = try await fetchWordCount(for: wordbook.id)
-            wordbook.wordCount = wordCount
-            wordbooks.append(wordbook)
+        // 동시성 관리
+        try await withThrowingTaskGroup(of: (Wordbook, Int).self) { group in
+            for document in querySnapshot.documents {
+                group.addTask {
+                    var wordbook = try document.data(as: Wordbook.self)
+                    let wordCount = try await self.fetchWordCount(for: wordbook.id)
+                    wordbook.wordCount = wordCount
+                    return (wordbook, wordCount)
+                }
+            }
+            
+            // 결과 수집
+            for try await (wordbook, _) in group {
+                wordbooks.append(wordbook)
+            }
         }
         
         return wordbooks
     }
+
     
     func fetchAllWordbooks() async throws -> [Wordbook] {
         let querySnapshot = try await db.collection("wordbooks")
