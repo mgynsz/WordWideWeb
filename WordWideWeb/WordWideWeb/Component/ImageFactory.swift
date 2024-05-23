@@ -10,7 +10,8 @@ import UIKit
 class ImageFactory {
     func makeImage() -> UIImageView {
         let logo = UIImageView()
-        logo.image = UIImage(named: "fakeLogo")
+        logo.image = UIImage(systemName: "globe.asia.australia.fill")
+        logo.tintColor = .black
         return logo
     }
 }
