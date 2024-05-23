@@ -130,20 +130,20 @@
 - ㅁㅁㅁㅁ
 
 
-### 단어 추가 (사전 검색)
+### 사전 검색 + 단어 추가
 - ㅁㅁㅁㅁ
 
 
 ### 단어장 생성
-- ㅁㅁㅁㅁ
-- ㅁㅁㅁㅁ
-- ㅁㅁㅁㅁ
+- custom color variation
+- public or private 
+- invite friends
+- set deadline (for the test!)
 
 
-### 친구 초대 요청
-- 회원 정보 수정
-- 주행 기록
-- 주행 가이드
+### 친구 초대
+- Test List 
+- Reject or Accept
 
 
 ### 테스트 기능
