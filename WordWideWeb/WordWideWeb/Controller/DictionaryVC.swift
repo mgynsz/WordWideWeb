@@ -11,17 +11,10 @@ import FirebaseAuth
 
 class DictionaryVC: UIViewController {
     
-    private let logoImage: UIImageView = {
-        let label = UIImageView()
-        label.image = UIImage.smileFace
-        return label
-    }()
-    private let logoLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Add Word"
-        label.font = UIFont.pretendard(size: 20, weight: .semibold)
-        return label
-    }()
+    lazy var topLabel = LabelFactory().makeLabel(text: "Add Word")
+    
+    lazy var topLogo = ImageFactory().makeImage()
+    
     private var searchBar = SearchBarWhite(frame: .zero, placeholder: "추가할 단어를 입력하세요", cornerRadius: 10)
     private lazy var tableview = UITableView()
     
@@ -58,24 +51,25 @@ class DictionaryVC: UIViewController {
     }
     
     func setConstraints() {
-        [logoImage, logoLabel, searchBar, tableview].forEach {
-            self.view.addSubview($0)
+        
+        view.addSubview(topLabel)
+        view.addSubview(topLogo)
+        view.addSubview(searchBar)
+        view.addSubview(tableview)
+        
+        topLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(80)
+            make.leading.equalToSuperview().offset(63)
         }
         
-        logoImage.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.trailing.equalTo(logoLabel.snp.leading).offset(3)
-            make.height.width.equalTo(28)
-        }
-        
-        logoLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalTo(logoImage.snp.verticalEdges)
-            make.leading.equalTo(logoImage.snp.trailing)
+        topLogo.snp.makeConstraints { make in
+            make.leading.equalTo(view).offset(20)
+            make.centerY.equalTo(topLabel.snp.centerY)
+            make.width.height.equalTo(28)
         }
         
         searchBar.snp.makeConstraints { make in
-            make.top.equalTo(logoImage.snp.bottom).offset(10)
+            make.top.equalTo(topLogo.snp.bottom).offset(24)
             make.horizontalEdges.equalTo(view.safeAreaLayoutGuide).inset(20)
         }
         
@@ -196,4 +190,5 @@ extension DictionaryVC: UITableViewDataSource {
         present(addWordBookVC, animated: true, completion: nil)
     }
 }
+
 

@@ -6,17 +6,42 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 
-struct InvitationData {
-    let id: String    // 흠.. 필요할까? 회의 때 물어보자..
+struct ReceivedInvitation {
+    let id: String    //
     let ownerId: String    //
     let photoURL: String?
     let title: String
     let dueDate: String
-    let createdAt: Timestamp
+    let createdAt: Date
     let words: [String]
-    var open = false
+}
+
+struct InvitationViewData {
+    let id: String
+    let ownerId: String
+    let to: String // 초대받은 사용자의 uid
+    let wordbookId: String // 단어장의 id
+    let photoURL: String?
+    let title: String
+    let dueDate: String
+    let createdAt: Date
+    let words: [String]
+    var open: Bool = false
+    
+    func toInvitation() -> Invitation {
+        return Invitation(
+            id: id,
+            from: ownerId,
+            to: to,
+            wordbookId: wordbookId,
+            title: title,
+            timestamp: Timestamp(date: createdAt),
+            dueDate: Timestamp(date: Date()) // 실제 초대 날짜로 설정
+        )
+    }
 }
 
 
@@ -31,13 +56,14 @@ struct InvitationData {
 //            acc.append(wordsHavingSameData)
 //        }
 //}
-//
-//func map(_ word: ReceivedInvitation) -> Int {
-//    Calendar.current.component(.day, from: word.createdAt)
-//}
-//
-//extension Array where Element == Int {
-//    func unique() -> Self {
-//        Array(Set(self))
-//    }
-//}
+
+func map(_ word: ReceivedInvitation) -> Int {
+    Calendar.current.component(.day, from: word.createdAt)
+}
+
+extension Array where Element == Int {
+    func unique() -> Self {
+        Array(Set(self))
+    }
+}
+

@@ -61,6 +61,16 @@ struct Invitation: Codable {
     let dueDate: Timestamp?
 }
 
+//struct InvitationData {
+//    let id: String
+//    let ownerId: String
+//    let photoURL: String?
+//    let title: String
+//    let dueDate: String
+//    let createdAt: Date
+//    let words: [String]
+//    var open: Bool = false
+//}
 
 extension UserDefaults {
     private enum Keys {
@@ -114,4 +124,5 @@ extension UserDefaults {
         set { set(newValue, forKey: Keys.appleDisplayName) }
     }
 }
+
 

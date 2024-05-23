@@ -287,7 +287,6 @@
 				2A1166002BFB723D000F61B0 /* WordbookCell.swift */,
 				F4ECA7662BFDDCA800CD24E6 /* PlayingListView.swift */,
 				F4ECA7682BFDDCBF00CD24E6 /* PlayingListViewCell.swift */,
-
 			);
 			path = View;
 			sourceTree = "<group>";

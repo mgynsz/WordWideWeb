@@ -31,7 +31,8 @@ class PlayingListVC: UIViewController {
             words: [
                 Word(id: "w1", term: "Variable", definition: "A storage location paired with an associated symbolic name."),
                 Word(id: "w2", term: "Function", definition: "A block of code that performs a specific task.")
-            ]
+            ],
+            maxAttendees: 4
         ),
         Wordbook(
             id: "2",
@@ -65,7 +66,8 @@ class PlayingListVC: UIViewController {
             words: [
                 Word(id: "w5", term: "Algorithm", definition: "A process or set of rules to be followed in calculations or other problem-solving operations."),
                 Word(id: "w6", term: "Data Structure", definition: "A particular way of organizing and storing data in a computer so that it can be accessed and modified efficiently.")
-            ]
+            ],
+            maxAttendees: 3
         )
     ]
     
