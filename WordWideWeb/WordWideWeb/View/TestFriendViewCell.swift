@@ -9,7 +9,7 @@ import UIKit
 
 class TestFriendViewCell: UICollectionViewCell {
     
-    private let friendImage: UIImageView = {
+    let friendImage: UIImageView = {
         let image = UIImageView()
         image.clipsToBounds = true
         image.backgroundColor = .systemGray2
@@ -34,6 +34,13 @@ class TestFriendViewCell: UICollectionViewCell {
         friendImage.snp.makeConstraints { make in
             make.width.height.centerX.centerY.equalToSuperview()
         }
+    }
+    
+    func bind(imageData: Data?){
+        if let image = imageData {
+            friendImage.image = UIImage(data: image)
+        }
+
     }
 }
 

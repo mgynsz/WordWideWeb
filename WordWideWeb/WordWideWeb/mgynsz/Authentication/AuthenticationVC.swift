@@ -203,7 +203,7 @@ class AuthenticationVC: UIViewController {
         _ = try await Auth.auth().signIn(with: credential)
         
         if let user = Auth.auth().currentUser {
-            let userModel = User(uid: user.uid, email: googleSignInResult.email ?? "", displayName: googleSignInResult.name, photoURL: googleSignInResult.photoURL, authProvider: .google)
+            let userModel = User(uid: user.uid, email: googleSignInResult.email ?? "", displayName: googleSignInResult.name, photoURL: googleSignInResult.photoURL, authProvider: .google, blockCount: 0)
             try await FirestoreManager.shared.saveOrUpdateUser(user: userModel)
         }
     }
@@ -232,7 +232,7 @@ class AuthenticationVC: UIViewController {
         _ = try await Auth.auth().signIn(with: credential)
         
         if let user = Auth.auth().currentUser {
-            let userModel = User(uid: user.uid, email: appleSignInResult.email ?? "", displayName: appleSignInResult.displayName, photoURL: nil, authProvider: .apple)
+            let userModel = User(uid: user.uid, email: appleSignInResult.email ?? "", displayName: appleSignInResult.displayName, photoURL: nil, authProvider: .apple, blockCount: 0)
             try await FirestoreManager.shared.saveOrUpdateUser(user: userModel)
         }
     }

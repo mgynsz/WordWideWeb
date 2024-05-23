@@ -6,27 +6,34 @@
 //
 
 import UIKit
+import Firebase
 
 class TestIntroViewController: UIViewController {
     
     
     // MARK: - properties
     private let testView = TestIntroView()
+    private var wordblocks: [Word] = []
+    private let testViewController = TestViewController()
     
-    var taskname: String = "개발자를 위한 영단어 10"
-    var taskmem: [String] = ["지연", "나연", "준영", "진영"]
-    var block: [[String:String]] = [
-        ["word": "Algorithm", "definition": "A set of rules or steps to solve a problem or perform a task."],
-        ["word": "API", "definition": "Application Programming Interface - A set of rules and tools for building software applications."],
-        ["word": "Backend", "definition": "The server-side part of a web application that interacts with databases and other external systems."],
-        ["word": "Debugging", "definition": "The process of finding and fixing errors or bugs in software code."],
-        ["word": "Framework", "definition": "A reusable set of libraries or tools used to develop software applications."],
-        ["word": "IDE", "definition": "Integrated Development Environment - A software application that provides comprehensive facilities to programmers for software development."],
-        ["word": "Repository", "definition": "A storage location for software packages and version control data."],
-        ["word": "Syntax", "definition": "The set of rules that defines the combinations of symbols that are considered to be correctly structured programs in a specific programming language."],
-        ["word": "Variable", "definition": "A symbolic name that is associated with a value and whose associated value may be changed."],
-        ["word": "Bug", "definition": "An error, flaw, failure, or fault in a computer program or system that causes it to produce an incorrect or unexpected result."]
-    ]
+    var testWordBook: Wordbook = Wordbook(
+        id: "2",
+        ownerId: "owner456",
+        title: "Advanced iOS Development",
+        isPublic: false,
+        dueDate: nil, // No due date
+        createdAt: Timestamp(date: Date().addingTimeInterval(-2592000)), // 1 month ago
+        attendees: ["user6", "user7"],
+        sharedWith: ["user8"],
+        colorCover: "red",
+        wordCount: 4,
+        words: [
+            Word(id: "w3", term: "Closure", definition: "A self-contained block of functionality that can be passed around and used in your code."),
+            Word(id: "w4", term: "Protocol", definition: "A blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality."),
+            Word(id: "w5", term: "Algorithm", definition: "A process or set of rules to be followed in calculations or other problem-solving operations."),
+            Word(id: "w6", term: "Data Structure", definition: "A particular way of organizing and storing data in a computer so that it can be accessed and modified efficiently.")
+        ]
+    )
     
     // MARK: - life cycles
     override func viewDidLoad() {
@@ -34,23 +41,38 @@ class TestIntroViewController: UIViewController {
         view = self.testView
         
         setData()
+        getWords()
     }
     
     // MARK: - method
     
     func setData(){
-        testView.bind(title: taskname, blockCount: block.count)
+        testView.bind(title: testWordBook.title, blockCount: testWordBook.wordCount)
         testView.startBtn.addTarget(self, action: #selector(didTappedStartBtn), for: .touchUpInside)
     }
     
-    @objc private func didTappedStartBtn() {
-        self.dismiss(animated: true)
-        let testViewController = TestViewController()
-        testViewController.modalPresentationStyle = .fullScreen
-        present(testViewController, animated: true)
-        
+    func getWords(){
+        let id = testWordBook.id
+        Task {
+            do {
+                self.wordblocks = try await FirestoreManager.shared.fetchWords(for: id)
+            } catch {
+                print("Error fetching wordbooks: \(error.localizedDescription)")
+            }
+        }
     }
     
+    @objc private func didTappedStartBtn() {
+        bind()
+        testViewController.modalPresentationStyle = .fullScreen
+        present(testViewController, animated: true)
+    }
     
+    func bind() {
+        testViewController.secondLeft = testWordBook.wordCount * 60
+        testViewController.block = wordblocks.map { ["term": $0.term, "definition": $0.definition] }
+        testViewController.taskname = testWordBook.title
+        testViewController.taskmem = testWordBook.attendees
+    }
 }
 

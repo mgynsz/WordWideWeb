@@ -21,7 +21,9 @@ class TestView: UIView {
     
     private let topImageLabel: UIImageView = {
         let label = UIImageView()
-        label.image = UIImage.smileFace
+        label.image = UIImage(systemName: "globe.asia.australia.fill")
+        label.contentMode = .scaleAspectFit
+        label.tintColor = .black
         return label
     }()
     

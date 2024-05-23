@@ -19,6 +19,10 @@ class TabBarController: UITabBarController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(showPage(_:)), name: NSNotification.Name("showPage"), object: nil)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("showPage"), object: nil)
+    }
 
     func setTabBar() {
         let appearance = UITabBarAppearance()
@@ -59,15 +63,13 @@ class TabBarController: UITabBarController {
     }
     
     @objc func showPage(_ notification:Notification) {
-        print("showPage")
-        
-        guard let userInfo = notification.userInfo, let wordbook = userInfo["wordbook"] else { return }
-        
-        print("received wordbook \(wordbook)")
+
+        guard let userInfo = notification.userInfo, let wordbook = userInfo["wordbook"] as? Wordbook else { return }
         
         let testIntroViewController = TestIntroViewController()
         testIntroViewController.modalPresentationStyle = .fullScreen
-        //testIntroViewController.wordbook = wordbook as? Wordbook
+        print("showPage///wordbook!!!!!!!!!\(wordbook)")
+        testIntroViewController.testWordBook = wordbook
         self.present(testIntroViewController, animated: true)
 
     }
