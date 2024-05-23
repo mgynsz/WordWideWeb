@@ -53,20 +53,14 @@
 <details>
    <summary> 24.05.16 </summary>
    <pre>● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
+
    </pre>
 </details>
 
 <details>
    <summary> 24.05.17 </summary>
    <pre>● 친구 초대 페이지 생성
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
-● ㅁㅁㅁㅁ
+
    </pre>
 </details>
 
@@ -126,19 +120,20 @@
 - 닉네임 및 프로필 이미지 수정
 
 
-### 단어 검색
-- ㅁㅁㅁㅁ
-
-
-### 사전 검색 + 단어 추가
-- ㅁㅁㅁㅁ
-
-
 ### 단어장 생성
-- custom color variation
-- public or private 
-- invite friends
-- set deadline (for the test!)
+- 원하는 단어장 컬러 선택
+- public 또는 private 옵션 설정 
+- 단어장으로 친구 초대
+- 단어 테스트 시간 : deadLine 세팅
+  
+
+### 사전에서 단어 검색
+- 궁금한 단어를 search bar에 입력
+- 단어의 정의와 발음 확인
+
+
+### 단어장에 단어 추가
+- 검색한 단어를 단어장에 추가
 
 
 ### 친구 초대
@@ -146,11 +141,11 @@
 - Reject or Accept
 
 
-### 테스트 기능
+### 단어 테스트
 - 정해진 시간 동안 정해진 단어의 퀴즈를 테스트하는 기능
 
 
-### 테스트 결과
+### 단어 테스트 결과
 - 맞춘 단어와 틀린 단어의 결과 안내 기능
 
 
@@ -169,11 +164,11 @@
 
 - **API**
 
-    <img src="https://img.shields.io/badge/-Kakao-FFCD00?style=flat&logo=Kakao&logoColor=white"/>
+    한국 기초 사전 API (국립 국어원 제작)
 
 - **Communication**
 
-    <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
+    <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/> 
 
 ## Project Structure
 
@@ -238,22 +233,13 @@ WWW
 
 ## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ 
+    - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
+    - 
 *  **신지연** ([JiYeonDu](https://github.com/JiYeonDu))
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
+    - 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
+
 *  **장진영** ([mgynsz](https://github.com/mgynsz))
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
+    - Apple, Google 로그인 관리 및 친구 초대를 위한 backend 전반
+
 *  **채나연** ([Nayeon Chae](https://github.com/NY-Chae))
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
-    - ㅁㅁㅁㅁㅁㅁ
+    - 홈 화면 및 단어장 캐로셀, 단어 상세페이지 등 UI Design 전반 
