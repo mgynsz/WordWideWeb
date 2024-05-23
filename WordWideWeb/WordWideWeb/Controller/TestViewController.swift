@@ -17,27 +17,17 @@ class TestViewController: UIViewController {
     
     // MARK: - properties
     private let testView = TestView()
-    private var secondLeft: Int = 180
+    var secondLeft: Int = 180
     
-    var taskname: String = "개발자를 위한 영단어 10"
-    var taskmem: [String] = ["지연", "나연", "준영", "진영"]
-    var block: [[String:String]] = [
-        ["word": "Algorithm", "definition": "A set of rules or steps to solve a problem or perform a task."],
-        ["word": "API", "definition": "Application Programming Interface - A set of rules and tools for building software applications."],
-        ["word": "Backend", "definition": "The server-side part of a web application that interacts with databases and other external systems."],
-        ["word": "Debugging", "definition": "The process of finding and fixing errors or bugs in software code."],
-        ["word": "Framework", "definition": "A reusable set of libraries or tools used to develop software applications."],
-        ["word": "IDE", "definition": "Integrated Development Environment - A software application that provides comprehensive facilities to programmers for software development."],
-        ["word": "Repository", "definition": "A storage location for software packages and version control data."],
-        ["word": "Syntax", "definition": "The set of rules that defines the combinations of symbols that are considered to be correctly structured programs in a specific programming language."],
-        ["word": "Variable", "definition": "A symbolic name that is associated with a value and whose associated value may be changed."],
-        ["word": "Bug", "definition": "An error, flaw, failure, or fault in a computer program or system that causes it to produce an incorrect or unexpected result."]
-    ]
+    var taskname: String = ""
+    var taskmem: [String] = []
+    var block: [[String:String]] = []
     
     private var currentIndex: Int = 0
     private var answer: String = ""
     private var status: [Status] = []
     private var timer: Timer?
+    private let resultVC = TestResultViewController()
     
     // MARK: - life cycles
     override func viewDidLoad() {
@@ -64,12 +54,13 @@ class TestViewController: UIViewController {
         
         status = Array(repeating: .none, count: block.count)
         
+        print("currentIndex\(currentIndex)")
         setTimer()
         reloadQView()
     }
     
     func setTimer(){
-        secondLeft = 10
+        secondLeft = block.count * 10
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (t) in
             //남은 시간(초)에서 1초 빼기
             self.secondLeft -= 1
@@ -83,7 +74,7 @@ class TestViewController: UIViewController {
             if self.secondLeft > 0 {
                 self.testView.timeLabel.text = String(format: "%02d:%02d", minutes, seconds)
             } else {
-                self.testView.timeLabel.text = "시간 끝!"
+                //self.testView.timeLabel.text = "시간 끝!"
                 self.timer?.invalidate()
                 self.moveToResultView()
             }
@@ -91,10 +82,11 @@ class TestViewController: UIViewController {
     }
     
     func reloadQView(){
+        print("currentIndex\(currentIndex)")
         if let def = block[currentIndex]["definition"] {
             testView.bindQ(page: currentIndex+1, definition: def)
         }
-        if let word = block[currentIndex]["word"] {
+        if let word = block[currentIndex]["term"] {
             answer = word
         }
         switch status[currentIndex] {
@@ -114,8 +106,7 @@ class TestViewController: UIViewController {
     }
     
     func moveToResultView(){
-        let resultVC = TestResultViewController()
-        resultVC.bind(status: status)
+        bind()
         resultVC.modalPresentationStyle = .fullScreen
         self.present(resultVC, animated: true)
     }
@@ -134,6 +125,11 @@ class TestViewController: UIViewController {
     
     func isNotSolved(){
         testView.questionView.layer.borderWidth = 0
+    }
+    
+    func bind(){
+        resultVC.block = self.block
+        resultVC.bind(status: status)
     }
     
     
@@ -198,7 +194,35 @@ extension TestViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TestFriendViewCell", for: indexPath) as! TestFriendViewCell
+        //cell.attendeesId = taskmem[indexPath.row]
+        fetchImageAndSetImage(for: taskmem[indexPath.row], imageView: cell.friendImage)
         return cell
+    }
+    
+    func fetchImageAndSetImage(for id: String, imageView: UIImageView) {
+        Task {
+            do {
+                if let url = try await fetchImage(id: id) {
+                    imageView.sd_setImage(with: URL(string: url), placeholderImage: UIImage(systemName: "person.crop.circle"))
+                
+                } else {
+                    imageView.image = UIImage(systemName: "person.crop.circle")
+                }
+            } catch {
+                print("Error fetching image: \(error.localizedDescription)")
+                imageView.image = UIImage(systemName: "person.crop.circle")
+            }
+        }
+    }
+    
+    func fetchImage(id: String) async throws -> String? {
+        do {
+            let user = try await FirestoreManager.shared.fetchUser(uid: id)
+            return user?.photoURL
+        } catch {
+            print("Error fetching image: \(error.localizedDescription)")
+            throw error
+        }
     }
 }
 

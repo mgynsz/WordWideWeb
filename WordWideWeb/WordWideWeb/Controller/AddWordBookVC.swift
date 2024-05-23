@@ -428,7 +428,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         let maxAttendees = Int(attendeesStepper.value)
 
         let wordbook = Wordbook(
-            id: UUID().uuidString,
+            id: id,
             ownerId: Auth.auth().currentUser!.uid,
             title: title,
             isPublic: isPublic,

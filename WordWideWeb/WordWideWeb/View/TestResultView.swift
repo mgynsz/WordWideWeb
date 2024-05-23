@@ -13,7 +13,9 @@ class TestResultView: UIView {
     // MARK: - properties
     private let topImageLabel: UIImageView = {
         let label = UIImageView()
-        label.image = UIImage.smileFace
+        label.image = UIImage(systemName: "globe.asia.australia.fill")
+        label.contentMode = .scaleAspectFit
+        label.tintColor = .black
         return label
     }()
     
@@ -34,7 +36,7 @@ class TestResultView: UIView {
         return view
     }()
     
-    private let imageLabel: UIImageView = {
+    private let resultimageLabel: UIImageView = {
         let label = UIImageView()
         label.image = UIImage.smileFace
         label.tintColor = .black
@@ -216,8 +218,8 @@ class TestResultView: UIView {
             make.width.equalTo(310)
         }
         
-        self.bodyView.addSubview(imageLabel)
-        imageLabel.snp.makeConstraints { make in
+        self.bodyView.addSubview(resultimageLabel)
+        resultimageLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(40)
             make.height.width.equalTo(100)
@@ -226,7 +228,7 @@ class TestResultView: UIView {
         self.bodyView.addSubview(resultLabel)
         resultLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(imageLabel.snp.bottom).offset(20)
+            make.top.equalTo(resultimageLabel.snp.bottom).offset(20)
         }
         
         self.bodyView.addSubview(testResStackView)
