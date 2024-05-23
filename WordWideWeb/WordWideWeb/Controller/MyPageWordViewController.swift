@@ -89,9 +89,17 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
     }
     
     @objc private func handleModalDismissed() {
+        if let indexPath = selectedIndexPath {
             selectedIndexPath = nil
             wordsCollecView.performBatchUpdates(nil, completion: nil)
+            if let cell = wordsCollecView.cellForItem(at: indexPath) as? BlockCell {
+                cell.backgroundColor = .white
+                cell.term.backgroundColor = .white
+                cell.term.textColor = .black
+                cell.term.font = .pretendard(size: 14, weight: .regular)
+            }
         }
+    }
     
 }
 
@@ -105,7 +113,7 @@ extension MyPageWordViewController: UICollectionViewDataSource, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BlockCell", for: indexPath) as! BlockCell
         
         let text = wordsList[indexPath.item].term
-        cell.bind(text: text)   // 내가 클릭한 단어장의 단어 불러와야
+        cell.bind(text: text)
         cell.term.font = UIFont.pretendard(size: 14, weight: .semibold)
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 5
@@ -128,10 +136,23 @@ extension MyPageWordViewController: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let previousSelectedIndexPath = selectedIndexPath, let previousCell = collectionView.cellForItem(at: previousSelectedIndexPath) as? BlockCell {
+            previousCell.backgroundColor = .white
+            previousCell.transform = .identity
+        }
+        
         selectedIndexPath = indexPath
         collectionView.performBatchUpdates(nil, completion: nil)
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BlockCell", for: indexPath) as! BlockCell
+        if let cell = collectionView.cellForItem(at: indexPath) as? BlockCell {
+            cell.backgroundColor = .black
+            cell.term.backgroundColor = .black
+            cell.term.textColor = .white
+            cell.term.font = .pretendard(size: 17, weight: .semibold)
+            UIView.animate(withDuration: 0.3) {
+                cell.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
+            }
+        }
         
         let myPageModalVC = MyPageModalViewController()
         let text = wordsList[indexPath.item].term
