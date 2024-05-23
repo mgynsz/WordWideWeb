@@ -212,5 +212,13 @@ extension ExpandableTableViewCell: UICollectionViewDataSource, UICollectionViewD
         cell.backgroundColor = .red
         return cell
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let text = words[indexPath.row]
+        let size = CGSize(width: collectionView.frame.width - 32, height: .greatestFiniteMagnitude) // Assuming 16 points padding on both sides
+        let attributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)]
+        let estimatedFrame = NSString(string: text).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil)
+        return CGSize(width: estimatedFrame.width + 32, height: estimatedFrame.height + 16) // Adding padding
+    }
 }
 

@@ -11,7 +11,7 @@ import SnapKit
 class MyPageModalViewController: UIViewController {
 
     var term: String = ""
-    
+  
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)
