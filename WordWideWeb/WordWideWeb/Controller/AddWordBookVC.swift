@@ -42,6 +42,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
     private let doneButton = UIButton(type: .system)
     private let closeButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
+    private let pushNotificationHelper = PushNotificationHelper.shared
     
     // State variables
     private var isUploading = false
@@ -157,7 +158,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         view.addSubview(closeButton)
         view.addSubview(activityIndicator)
         view.addSubview(invitedFriendsCollectionView)
-             
+        
         setElementsState(isTimePeriodEnabled: false, isPublicEnabled: false)
     }
     
@@ -209,18 +210,18 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         deadlineDatePicker.snp.makeConstraints { make in
             make.leading.equalTo(timePeriodYesButton.snp.leading)
             make.centerY.equalTo(deadlineLabel)
-//            make.height.equalTo(20)
+            //            make.height.equalTo(20)
         }
         
         publicButton.snp.makeConstraints { make in
-//            make.top.equalTo(deadlineLabel.snp.bottom).offset(36)
+            //            make.top.equalTo(deadlineLabel.snp.bottom).offset(36)
             make.leading.equalTo(attendeesLabel.snp.trailing).offset(60)
             make.centerY.equalTo(attendeesLabel)
-//            make.trailing.equalTo(view.snp.centerX).offset(-10)
+            //            make.trailing.equalTo(view.snp.centerX).offset(-10)
         }
         
         privateButton.snp.makeConstraints { make in
-//            make.top.equalTo(deadlineLabel.snp.bottom).offset(36)
+            //            make.top.equalTo(deadlineLabel.snp.bottom).offset(36)
             make.leading.equalTo(publicButton.snp.trailing).offset(24)
             make.centerY.equalTo(attendeesLabel)
         }
@@ -231,10 +232,10 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         }
         
         attendeesStepper.snp.makeConstraints { make in
-//            make.top.equalTo(deadlineDatePicker.snp.bottom).offset(24)
+            //            make.top.equalTo(deadlineDatePicker.snp.bottom).offset(24)
             make.centerY.equalTo(inviteLabel.snp.centerY)
             make.trailing.equalTo(view).offset(-24)
-//            make.centerY.equalTo(attendeesLabel)
+            //            make.centerY.equalTo(attendeesLabel)
         }
         
         attendeesCountLabel.snp.makeConstraints { make in
@@ -275,7 +276,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             make.center.equalTo(view)
         }
     }
-
+    
     
     private func setupActions() {
         timePeriodYesButton.addTarget(self, action: #selector(timePeriodButtonTapped), for: .touchUpInside)
@@ -295,17 +296,17 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
     private func setElementsState(isTimePeriodEnabled: Bool, isPublicEnabled: Bool) {
         let enabledColor = UIColor.black
         let disabledColor = UIColor.lightGray
-
+        
         deadlineLabel.textColor = isTimePeriodEnabled ? enabledColor : disabledColor
         deadlineDatePicker.isEnabled = isTimePeriodEnabled
-
+        
         attendeesLabel.textColor = isPublicEnabled ? enabledColor : disabledColor
         attendeesStepper.isEnabled = isPublicEnabled
         attendeesCountLabel.text = "\(Int(attendeesStepper.value))"
-
+        
         inviteLabel.textColor = isPublicEnabled ? enabledColor : disabledColor
         updateInviteButtonState()
-
+        
         // 비공개 버튼을 비활성화하는 로직 추가
         privateButton.isEnabled = invitedFriends.isEmpty
         privateButton.alpha = invitedFriends.isEmpty ? 1.0 : 0.4
@@ -392,7 +393,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         }
         present(searchFriendsVC, animated: true, completion: nil)
     }
-
+    
     @objc private func attendeesStepperChanged() {
         let maxAttendees = Int(attendeesStepper.value)
         let currentAttendees = invitedFriends.count + 1
@@ -419,7 +420,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
               publicButton.isSelected || privateButton.isSelected else {
             return
         }
-
+        
         let isPublic = publicButton.isSelected
         let dueDate: Timestamp? = timePeriodYesButton.isSelected ? Timestamp(date: deadlineDatePicker.date) : nil
         var attendees: [String] = [Auth.auth().currentUser!.uid]
@@ -428,7 +429,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         let maxAttendees = Int(attendeesStepper.value)
         
         let id = UUID().uuidString
-
+        
         let wordbook = Wordbook(
             id: id,
             ownerId: Auth.auth().currentUser!.uid,
@@ -443,9 +444,12 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             words: [],
             maxAttendees: maxAttendees
         )
-
+        
         activityIndicator.startAnimating()
-
+        
+        guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
+        pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
+        
         Task {
             do {
                 try await FirestoreManager.shared.createWordbook(wordbook: wordbook)
@@ -473,21 +477,30 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             }
         }
     }
-
+    
+    func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
+        guard let timestamp = timestamp else { return nil }
+        
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp.seconds))
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        
+        return components
+    }
     
     // MARK: z컬렉션뷰
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return invitedFriends.count
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: InvitedFriendCell.identifier, for: indexPath) as! InvitedFriendCell
         let friend = invitedFriends[indexPath.row]
         cell.configure(with: friend)
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 70)
     }
