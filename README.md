@@ -28,68 +28,67 @@
 ## Timeline
 
 <details>
-   <summary> 24.05.13 </summary>
+   <summary>24.05.13</summary>
     <pre>● Project 아이디어 회의
     ○ 컨셉 논의, 역할 분담, 와이어프레임 구성
 
-    </pre>
 </details>
 
 <details>
-   <summary> 24.05.14 </summary>
-        <pre>● 주요 기능에 대한 상세한 논의
-● 소셜 로그인 페이지 구현
+    <pre>● 소셜 로그인 페이지 구현
     ○ Sign in / Sign up 기능 및 페이지 구현
-        </pre>
-</details>
 
 <details>
-   <summary> 24.05.15 </summary>
+   <summary>24.05.15</summary>
     <pre>● 계정 정보 저장(backend) 기능 구현
 ● Firebase 구축
     </pre>
 </details>
 
 <details>
-   <summary> 24.05.16 </summary>
-   <pre>● ㅁㅁㅁㅁ
+   <summary>24.05.16</summary>
+   <pre>● 전체적인 Flow 및 핵심 기능 확정
 
    </pre>
 </details>
 
 <details>
-   <summary> 24.05.17 </summary>
+   <summary>24.05.17</summary>
    <pre>● 친구 초대 페이지 생성
-
+● 친구 초대 페이지 생성
    </pre>
 </details>
 
 <details>
-   <summary> 24.05.18 </summary>
-   <pre>● ㅁㅁㅁㅁ
+   <summary>24.05.18</summary>
+   <pre>● 단어장에 친구 초대 기능 구현
+    ● 전체적인 디자인 및 컬러 변경
    </pre>
 </details>    
 
 <details>
-   <summary> 24.05.21 </summary>
-   <pre>● ㅁㅁㅁㅁ
+   <summary>24.05.21</summary>
+   <pre>● 단어 테스트 기능 구현 
+      ● 네트워크 매니저 구현
+      ● API 호출 결과 바인팅
    </pre>
 </details>    
 
 <details>
-   <summary> 24.05.22 </summary>
-   <pre>● ㅁㅁㅁㅁ
+   <summary>24.05.22</summary>
+   <pre>● 네트워크 매니저 구현
+      ● API 호출 결과 바인딩
    </pre>
 </details>    
 
 <details>
-   <summary> 24.05.23 </summary>
-   <pre>● ㅁㅁㅁㅁ
+   <summary>24.05.23</summary>
+   <pre>● 초대 요청을 받은 친구 알람 기능 구현
    </pre>
 </details>   
 
 <details>
-   <summary> 24.05.24 </summary>
+   <summary>24.05.24</summary>
    <pre>● 최종 점검 (UI 디테일 및 파일명, 디자인 패턴 점검 등)
 ● ReadMe 작성
    </pre>
@@ -234,7 +233,7 @@ WWW
 ## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
     - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
-    - 
+
 *  **신지연** ([JiYeonDu](https://github.com/JiYeonDu))
     - 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
 
