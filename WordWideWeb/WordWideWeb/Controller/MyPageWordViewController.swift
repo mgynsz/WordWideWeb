@@ -17,8 +17,8 @@ class MyPageWordViewController: UIViewController, UIViewControllerTransitioningD
     private let wordViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 10
-        layout.minimumInteritemSpacing = 30
+        layout.minimumLineSpacing = 30
+        layout.minimumInteritemSpacing = 10
         
         return layout
     }()
@@ -88,6 +88,11 @@ extension MyPageWordViewController: UICollectionViewDataSource, UICollectionView
         cell.term.font = UIFont.pretendard(size: 14, weight: .semibold)
         cell.backgroundColor = .white
         cell.layer.cornerRadius = 5
+        cell.layer.masksToBounds = false
+        cell.layer.shadowColor = UIColor.black.cgColor
+        cell.layer.shadowOpacity = 0.5
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2)
+        cell.layer.shadowRadius = 3
         
         return cell
     }
