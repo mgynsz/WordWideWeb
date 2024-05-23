@@ -166,44 +166,34 @@ final class FirestoreManager {
     func searchUserByEmail(query: String) async throws -> [User] {
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedQuery.isEmpty else { return [] }
-        
+
         let snapshot = try await db.collection("users")
             .whereField("email", isGreaterThanOrEqualTo: trimmedQuery)
             .whereField("email", isLessThanOrEqualTo: trimmedQuery + "\u{f8ff}")
             .getDocuments()
-        
-        return snapshot.documents.compactMap { try? $0.data(as: User.self) }
+
+        let currentUserID = Auth.auth().currentUser?.uid
+        return snapshot.documents.compactMap { document in
+            let user = try? document.data(as: User.self)
+            return user?.uid != currentUserID ? user : nil
+        }
     }
-    
+
     // 이름으로 사용자 검색
     func searchUserByName(query: String) async throws -> [User] {
         let trimmedQuery = query.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedQuery.isEmpty else { return [] }
-        
+
         let snapshot = try await db.collection("users")
             .whereField("displayName", isGreaterThanOrEqualTo: trimmedQuery)
             .whereField("displayName", isLessThanOrEqualTo: trimmedQuery + "\u{f8ff}")
             .getDocuments()
-        
-        return snapshot.documents.compactMap { try? $0.data(as: User.self) }
-    }
-    
-    // 초대장 전송
-    func sendInvitation(to recipientUID: String, wordbookId: String, title: String, dueDate: Timestamp?) async throws {
-        let currentUserUID = Auth.auth().currentUser!.uid
-        let invitation = Invitation(
-            id: UUID().uuidString,
-            from: currentUserUID,
-            to: recipientUID,
-            wordbookId: wordbookId,
-            title: title,
-            timestamp: Timestamp(date: Date()),
-            dueDate: dueDate  // 제한 기한을 포함
-        )
-        
-        let data = try Firestore.Encoder().encode(invitation)
-        
-        try await Firestore.firestore().collection("invitations").document(invitation.id).setData(data)
+
+        let currentUserID = Auth.auth().currentUser?.uid
+        return snapshot.documents.compactMap { document in
+            let user = try? document.data(as: User.self)
+            return user?.uid != currentUserID ? user : nil
+        }
     }
     
     enum FirestoreError: Error {
@@ -301,7 +291,7 @@ final class FirestoreManager {
     }
     
     // 단어들을 가져오는 메서드
-    func fetchWords(for wordbookId: String) async throws -> [Word] {      // private 삭제
+    private func fetchWords(for wordbookId: String) async throws -> [Word] {
         let snapshot = try await db.collection("wordbooks").document(wordbookId).collection("words").getDocuments()
         return snapshot.documents.compactMap { try? $0.data(as: Word.self) }
     }
@@ -372,20 +362,73 @@ final class FirestoreManager {
     }
     
     // MARK: 초대 관련
+    
+    // 초대 가져오기
+    func fetchInvitations(for userId: String) async throws -> [InvitationViewData] {
+        let snapshot = try await db.collection("invitations")
+            .whereField("to", isEqualTo: userId)
+            .getDocuments()
+        
+        var invitations: [InvitationViewData] = []
+        for document in snapshot.documents {
+            if let invitation = try? document.data(as: Invitation.self) {
+                let wordbookDoc = try await db.collection("wordbooks").document(invitation.wordbookId).getDocument()
+                if var wordbook = try? wordbookDoc.data(as: Wordbook.self) {
+                    let words = try await fetchWords(for: invitation.wordbookId) // 단어 불러오기
+                    wordbook.words = words
+                    
+                    let ownerDoc = try await db.collection("users").document(wordbook.ownerId).getDocument()
+                    if let owner = try? ownerDoc.data(as: User.self) {
+                        let invitationData = InvitationViewData(
+                            id: invitation.id,
+                            ownerId: owner.uid,
+                            to: userId,
+                            wordbookId: wordbook.id,
+                            photoURL: owner.photoURL,
+                            title: wordbook.title,
+                            dueDate: wordbook.dueDate?.dateValue().description ?? "",
+                            createdAt: wordbook.createdAt.dateValue(),
+                            words: wordbook.words.map { $0.term }
+                        )
+                        invitations.append(invitationData)
+                    }
+                }
+            }
+        }
+        return invitations
+    }
+    
+    // 초대장 전송
+    func sendInvitation(to recipientUID: String, wordbookId: String, title: String, dueDate: Timestamp?) async throws {
+        let currentUserUID = Auth.auth().currentUser!.uid
+        let invitation = Invitation(
+            id: UUID().uuidString,
+            from: currentUserUID,
+            to: recipientUID,
+            wordbookId: wordbookId,
+            title: title,
+            timestamp: Timestamp(date: Date()),
+            dueDate: dueDate  // 제한 기한을 포함
+        )
+        
+        let data = try Firestore.Encoder().encode(invitation)
+        
+        try await Firestore.firestore().collection("invitations").document(invitation.id).setData(data)
+    }
 
     // 초대 전송
-    func sendInvitation(to recipientUID: String, wordbookId: String, title: String) async throws {
-        let currentUserUID = Auth.auth().currentUser!.uid
-        let invitationData: [String: Any] = [
-            "from": currentUserUID,
-            "to": recipientUID,
-            "wordbookId": wordbookId,
-            "title": title,
-            "timestamp": FieldValue.serverTimestamp()
-        ]
-        
-        try await db.collection("invitations").addDocument(data: invitationData)
-    }
+//    func sendInvitation(to recipientUID: String, wordbookId: String, title: String) async throws {
+//        let currentUserUID = Auth.auth().currentUser!.uid
+//        let invitationData: [String: Any] = [
+//            "from": currentUserUID,
+//            "to": recipientUID,
+//            "wordbookId": wordbookId,
+//            "title": title,
+//            "timestamp": FieldValue.serverTimestamp()
+//        ]
+//
+//        try await db.collection("invitations").addDocument(data: invitationData)
+//    }
 
     // 초대 수락
     func acceptInvitation(invitation: Invitation) async throws {
@@ -402,6 +445,11 @@ final class FirestoreManager {
     func declineInvitation(invitation: Invitation) async throws {
         let invitationRef = db.collection("invitations").document(invitation.id)
         try await invitationRef.delete()
+        
+        let wordbookRef = db.collection("wordbooks").document(invitation.wordbookId)
+        try await wordbookRef.updateData([
+            "attendees": FieldValue.arrayRemove([invitation.to])
+        ])
     }
     
     // 초대 가져오기
@@ -447,3 +495,5 @@ final class FirestoreManager {
         }
     }
 }
+
+

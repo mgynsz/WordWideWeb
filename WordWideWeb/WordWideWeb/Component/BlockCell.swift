@@ -9,10 +9,16 @@ import SnapKit
 
 class BlockCell: UICollectionViewCell {
     
-    let term: UILabel = {
+    static let identifier = "BlockCell"
+    
+    private let term: UILabel = {
         let term = UILabel()
         term.textColor = .black
-        term.font = UIFont.pretendard(size: 16, weight: .semibold)
+        term.font = UIFont.pretendard(size: 14, weight: .semibold)
+        term.backgroundColor = .white
+        term.textAlignment = .center
+        term.layer.cornerRadius = 4
+        term.clipsToBounds = true
         return term
     }()
     
@@ -40,5 +46,4 @@ class BlockCell: UICollectionViewCell {
             make.centerX.centerY.equalToSuperview()
         }
     }
-    
 }

@@ -14,6 +14,8 @@ class ListViewCell: UIView {
     
     let imageLabel: UIImageView = {
         let image = UIImageView()
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 30
         return image
     }()
     
@@ -43,8 +45,7 @@ class ListViewCell: UIView {
     
     func setUI(){
         self.backgroundColor = .clear
-        self.imageLabel.clipsToBounds = true
-        self.imageLabel.layer.cornerRadius = 25
+
         
         self.addSubview(imageLabel)
         imageLabel.snp.makeConstraints { make in
@@ -79,3 +80,4 @@ class ListViewCell: UIView {
         self.dateLabel.text = date
     }
 }
+

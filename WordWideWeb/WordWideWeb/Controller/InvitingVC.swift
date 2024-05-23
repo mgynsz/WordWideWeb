@@ -6,153 +6,160 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
+import SDWebImage
 
 class InvitingVC: UIViewController {
-    
-    private let logoImage: UIImageView = {
-        let label = UIImageView()
-        label.image = UIImage.smileFace
-        return label
-    }()
-    private let logoLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Notify"
-        label.font = UIFont.pretendard(size: 20, weight: .semibold)
-        return label
-    }()
-    private let tableview = UITableView()
-    
-    private var invitationList: [InvitationData] = [
-        InvitationData(id: "1", ownerId: "jiyeon", photoURL: nil, title: "영어단어장100", dueDate: "2024.05.24", createdAt: "2024.05.20", words: ["world", "tree", "apple"]),
-        InvitationData(id: "2", ownerId: "nayeon", photoURL: nil, title: "개발자필수단어장", dueDate: "2024.05.23", createdAt: "2024.05.20", words: ["api", "computer", "keyboard", "macbook", "framework"]),
-        InvitationData(id: "3", ownerId: "jinyeong", photoURL: nil, title: "호텔필수단어장", dueDate: "2024.05.23", createdAt: "2024.05.18", words: ["kindness", "frontdesk", "owner", "amenity", "buffet"])
-    ]
 
+    lazy var topLabel = LabelFactory().makeLabel(text: "Notify")
     
+    lazy var topLogo = ImageFactory().makeImage()
+    
+    private let tableview = UITableView()
+
+    private var invitationList: [InvitationViewData] = [] // 네트워크로 받아올 데이터
+
+    var openedIndex: IndexPath?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         configureUI()
         setConstraints()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchInvitations() // 뷰가 나타날 때마다 초대장 불러오기
+    }
+
     func configureUI() {
         self.view.backgroundColor = UIColor(named: "bgColor")
         navigationController?.setNavigationBarHidden(true, animated: false)
-        
+
         tableview.register(DefaultTableViewCell.self, forCellReuseIdentifier: DefaultTableViewCell.identifier)
-        tableview.register(ExpandableTableViewCell.self, forCellReuseIdentifier: ExpandableTableViewCell.identfier)
+        tableview.register(ExpandableTableViewCell.self, forCellReuseIdentifier: ExpandableTableViewCell.identifier)
         self.tableview.backgroundColor = UIColor(named: "bgColor")
         self.tableview.dataSource = self
         self.tableview.delegate = self
     }
-    
+
     func setConstraints() {
-        [logoImage, logoLabel, tableview].forEach {
-            self.view.addSubview($0)
+        view.addSubview(topLabel)
+        view.addSubview(topLogo)
+        view.addSubview(tableview)
+
+        topLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(80)
+            make.leading.equalToSuperview().offset(63)
         }
         
-        logoImage.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).inset(20)
-            make.trailing.equalTo(logoLabel.snp.leading).offset(3)
-            make.height.width.equalTo(28)
+        topLogo.snp.makeConstraints { make in
+            make.leading.equalTo(view).offset(20)
+            make.centerY.equalTo(topLabel.snp.centerY)
+            make.width.height.equalTo(28)
         }
-        
-        logoLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalTo(logoImage.snp.verticalEdges)
-            make.leading.equalTo(logoImage.snp.trailing)
-        }
-        
+
         tableview.snp.makeConstraints { make in
-            make.top.equalTo(logoImage.snp.bottom).offset(10)
+            make.top.equalTo(topLabel.snp.bottom).offset(24)
             make.horizontalEdges.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
-    
-//    func removeExpiredInvitations() {
-//            let currentDate = Date()
-//            
-//            for section in (0..<invitationList.count).reversed() {
-//                for row in (0..<invitationList[section].count).reversed() {
-//                    let invitation = invitationList[section][row]
-//                    if let dueDate = invitation.dueDate, dueDate < currentDate {
-//                        invitationList[section].remove(at: row)
-//                    }
-//                }
-//            }
-//            tableView.reloadData()
-//        }
-    
+
+    func fetchInvitations() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        
+        Task {
+            do {
+                self.invitationList = try await FirestoreManager.shared.fetchInvitations(for: userId)
+                self.tableview.reloadData()
+            } catch {
+                print("Error fetching invitations: \(error)")
+            }
+        }
+    }
 }
-    
-    
+
 extension InvitingVC: UITableViewDataSource, UITableViewDelegate {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return invitationList.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-          if invitationList[section].open == true {
-              return 1 + 1
-          } else {
-              return 1
-          }
-      }
+        return invitationList.count
+    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 0 {
-            return 80
-        } else {
-            return 80
-        }
+        return invitationList[indexPath.row].open ? 220 : 100
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let index = invitationList[indexPath.section]
-        
-        if indexPath.row == 0 {
-            let cell = tableview.dequeueReusableCell(withIdentifier: DefaultTableViewCell.identifier, for: indexPath) as! DefaultTableViewCell
-            
-            let imageData: Data? = UIImage(named: "smileFace")?.pngData()
-            cell.defaultView.bind(imageData: imageData, title: index.title, date: index.dueDate)
-            
-            return cell
-        } else {
-            let cell = tableview.dequeueReusableCell(withIdentifier: ExpandableTableViewCell.identfier, for: indexPath) as! ExpandableTableViewCell
-            
-            cell.bindExpandedView(words: index.words)
-            cell.rejectButtonAction = { [weak self] in
-                guard let self = self else { return }
-                self.invitationList.remove(at: indexPath.section)
-                tableView.deleteSections(IndexSet(integer: indexPath.section), with: .automatic)
-            }
-            cell.acceptButtonAction = {
-                print("단어장 초대 수락")
-            }
-            return cell
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableview.cellForRow(at: indexPath) as? DefaultTableViewCell else {return}
-        guard let index = tableview.indexPath(for: cell) else { return }
-        
-        if index.row == indexPath.row {
-            if index.row == 0 {
-                if invitationList[indexPath.section].open == true {
-                    invitationList[indexPath.section].open = false
-                    let section = IndexSet.init(integer: indexPath.section)
-                    tableView.reloadSections(section, with: .fade)
-                    
+                let invitation = invitationList[indexPath.row]
+                let imageURL = URL(string: invitation.photoURL ?? "")
+                let formattedDate = DateFormatter.localizedString(from: invitation.createdAt, dateStyle: .short, timeStyle: .short)
+                
+                if !invitation.open {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: DefaultTableViewCell.identifier, for: indexPath) as! DefaultTableViewCell
+                    cell.configure(title: invitation.title, date: formattedDate, imageURL: imageURL)
+                    return cell
                 } else {
-                    invitationList[indexPath.section].open = true
-                    let section = IndexSet.init(integer: indexPath.section)
-                    tableView.reloadSections(section, with: .fade)
+                    let cell = tableView.dequeueReusableCell(withIdentifier: ExpandableTableViewCell.identifier, for: indexPath) as! ExpandableTableViewCell
+                    cell.configure(title: invitation.title, date: formattedDate, imageURL: imageURL)
+                    cell.bindExpandedView(words: invitation.words)
+                    cell.rejectButtonAction = { [weak self] in
+                        Task {
+                            do {
+                                let invitationToReject = Invitation(
+                                    id: invitation.id,
+                                    from: invitation.ownerId,
+                                    to: Auth.auth().currentUser!.uid,
+                                    wordbookId: invitation.wordbookId,
+                                    title: invitation.title,
+                                    timestamp: Timestamp(date: invitation.createdAt),
+                                    dueDate: nil
+                                )
+                                try await FirestoreManager.shared.declineInvitation(invitation: invitationToReject)
+                                DispatchQueue.main.async {
+                                    self?.invitationList.remove(at: indexPath.row)
+                                    self?.tableview.deleteRows(at: [indexPath], with: .automatic)
+                                }
+                            } catch {
+                                print("Error declining invitation: \(error)")
+                            }
+                        }
+                    }
+                    cell.acceptButtonAction = { [weak self] in
+                        Task {
+                            do {
+                                let invitationToAccept = Invitation(
+                                    id: invitation.id,
+                                    from: invitation.ownerId,
+                                    to: Auth.auth().currentUser!.uid,
+                                    wordbookId: invitation.wordbookId,
+                                    title: invitation.title,
+                                    timestamp: Timestamp(date: invitation.createdAt),
+                                    dueDate: nil
+                                )
+                                try await FirestoreManager.shared.acceptInvitation(invitation: invitationToAccept)
+                                DispatchQueue.main.async {
+                                    self?.invitationList.remove(at: indexPath.row)
+                                    self?.tableview.deleteRows(at: [indexPath], with: .automatic)
+                                }
+                            } catch {
+                                print("Error accepting invitation: \(error)")
+                            }
+                        }
+                    }
+                    return cell
                 }
             }
+        
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            invitationList[indexPath.row].open.toggle()
+            let section = IndexSet(integer: indexPath.section)
+            tableView.reloadSections(section, with: .fade)
         }
-    }
-    
 }
 

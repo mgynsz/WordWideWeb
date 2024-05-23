@@ -43,8 +43,6 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
     private let closeButton = UIButton(type: .system)
     private let activityIndicator = UIActivityIndicatorView(style: .medium)
     
-    private let pushNotificationHelper = PushNotificationHelper.shared
-    
     // State variables
     private var isUploading = false
     private var selectedColorButton: UIButton?
@@ -427,11 +425,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
         var attendees: [String] = [Auth.auth().currentUser!.uid]
         attendees.append(contentsOf: invitedFriends.map { $0.uid })
         
-
         let maxAttendees = Int(attendeesStepper.value)
-
-        let id = UUID().uuidString
-
 
         let wordbook = Wordbook(
             id: UUID().uuidString,
@@ -445,18 +439,26 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             colorCover: coverColor,
             wordCount: 0,
             words: [],
-            maxAttendees: Int(attendeesStepper.value)
+            maxAttendees: maxAttendees
         )
-        
-        guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
-        pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
-      
+
         activityIndicator.startAnimating()
 
         Task {
             do {
                 try await FirestoreManager.shared.createWordbook(wordbook: wordbook)
                 print("Wordbook created successfully")
+                
+                // 초대장 전송
+                for friend in invitedFriends {
+                    try await FirestoreManager.shared.sendInvitation(
+                        to: friend.uid,
+                        wordbookId: wordbook.id,
+                        title: title,
+                        dueDate: dueDate
+                    )
+                }
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     self.activityIndicator.stopAnimating()
                     self.dismiss(animated: true, completion: nil)
@@ -469,16 +471,7 @@ class AddWordBookVC: UIViewController, UITextFieldDelegate, UICollectionViewDele
             }
         }
     }
-    
-    func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
-        guard let timestamp = timestamp else { return nil }
-        
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp.seconds))
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-        
-        return components
-    }
+
     
     // MARK: z컬렉션뷰
 
@@ -505,4 +498,5 @@ private extension UITextField {
         self.leftViewMode = .always
     }
 }
+
 
