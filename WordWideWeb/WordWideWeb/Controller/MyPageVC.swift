@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import FirebaseAuth
 
 class MyPageVC: UIViewController {
     
@@ -33,23 +34,19 @@ class MyPageVC: UIViewController {
     // 단어장 카드 collectionView
     var collection: UICollectionView = {
         let layout = CarouselLayout()
-        
         layout.itemSize = CGSize(width: 297, height: 450)
         layout.sideItemScale = 175/251
         layout.spacing = -175
         layout.isPagingEnabled = true
         layout.sideItemAlpha = 0.5
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-     //  view.showsHorizontalScrollIndicator = false  // 자동으로 horizontal인것을 꺼주기
-        
         view.backgroundColor = UIColor(named: "bgColor")
+        view.showsHorizontalScrollIndicator = false
         view.register(MyPageCollectionViewCell.self, forCellWithReuseIdentifier: "MyPageCollectionViewCell")
         return view
     }()
     
-    // 홈 화면 단어 카드에 들어가는 정보 Array
-    var myPageList = [MyPage]()
+    var wordbookList = [(Wordbook, User)]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,28 +54,20 @@ class MyPageVC: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: false)
         
         setupViews()
-        collecctionSetup()
-        
-        //더미 데이터 생성
-        makeDummy(count: 5)
+        collectionSetup()
         
         addWordBookButton.addTarget(self, action: #selector(addWordBookButtonTapped), for: .touchUpInside)
-        
-      
-        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchAndSetWordbooks() // 뷰가 나타날 때마다 단어장 불러오기
+    }
+    
     @objc private func addWordBookButtonTapped() {
         let addWordBookVC = AddWordBookVC()
         addWordBookVC.modalPresentationStyle = .formSheet
         present(addWordBookVC, animated: true, completion: nil)
-    }
-    
-    
-
-    func makeDummy(count: Int) {
-        for _ in 0...count-1 {
-            let dummy = MyPage(word: ["let"], title: "개발자 필수 영단어", name: "jiyeon", image: "cross")
-            myPageList.append(dummy)
-        }
     }
     
     func setupViews() {
@@ -86,7 +75,7 @@ class MyPageVC: UIViewController {
         view.addSubview(topLogo)
         view.addSubview(addWordBookButton)
         view.addSubview(collection)
-  
+        
         topLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(80)
             make.leading.equalToSuperview().offset(63)
@@ -107,10 +96,62 @@ class MyPageVC: UIViewController {
         
         collection.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(130)
-            make.leading.equalToSuperview().offset(45)
-            make.trailing.equalToSuperview().offset(-45)
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview().offset(-190)
+        }
+    }
+    
+    // 컬렉션 뷰 설정 함수
+    func collectionSetup() {
+        collection.delegate = self
+        collection.dataSource = self
+    }
+    
+    // 단어장 데이터 가져오기 및 설정
+    func fetchAndSetWordbooks() {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        Task {
+            do {
+                let wordbooks = try await FirestoreManager.shared.fetchFilteredSharedWordbooks(for: userId)
+                
+                self.wordbookList.removeAll()
+                var wordbookSet = Set<String>()
+                
+                for wordbook in wordbooks {
+                    if !wordbookSet.contains(wordbook.id), let user = try await FirestoreManager.shared.fetchUser(uid: wordbook.ownerId) {
+                        wordbookSet.insert(wordbook.id)
+                        self.wordbookList.append((wordbook, user))
+                    }
+                }
+                
+                self.collection.reloadData()
+            } catch {
+                print("Error fetching wordbooks: \(error)")
+            }
         }
     }
 }
 
+extension MyPageVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return wordbookList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collection.dequeueReusableCell(withReuseIdentifier: "MyPageCollectionViewCell", for: indexPath) as? MyPageCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        
+        let (wordbook, user) = wordbookList[indexPath.row]
+        cell.configure(with: wordbook, user: user)
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let myPageWordVC = MyPageWordViewController()
+        myPageWordVC.modalPresentationStyle = .fullScreen
+        present(myPageWordVC, animated: true, completion: nil)
+    }
+}

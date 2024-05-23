@@ -235,7 +235,8 @@ final class FirestoreManager {
         data["attendees"] = wordbook.attendees
         data["words"] = [] as [String]
         data["wordCount"] = 0
-        
+        data["maxAttendees"] = wordbook.maxAttendees
+
         let wordbookRef = db.collection("wordbooks").document(wordbook.id)
         try await wordbookRef.setData(data)
         
@@ -427,33 +428,37 @@ final class FirestoreManager {
         }
     }
     
-    // 공유 단어장 가져오기
-    func fetchSharedWordbooks(for userId: String) async throws -> [Wordbook] {
-        let userDoc = try await db.collection("users").document(userId).getDocument()
-        guard let sharedWordbookIds = userDoc.data()?["sharedWordbooks"] as? [String] else {
-            return []
-        }
+    // 공유 단어장 필터링하여 가져오기
+    func fetchFilteredSharedWordbooks(for userId: String) async throws -> [Wordbook] {
+        let publicWordbooksQuery = db.collection("wordbooks")
+            .whereField("isPublic", isEqualTo: true)
         
+        let publicSnapshot = try await publicWordbooksQuery.getDocuments()
+        
+        var wordbookSet = Set<String>()  // 중복 방지를 위한 Set
         var wordbooks: [Wordbook] = []
         
-        try await withThrowingTaskGroup(of: Wordbook?.self) { group in
-            for id in sharedWordbookIds {
-                group.addTask {
-                    let doc = try await self.db.collection("wordbooks").document(id).getDocument()
-                    return try doc.data(as: Wordbook.self)
-                }
-            }
-            
-            for try await wordbook in group {
-                if let wordbook = wordbook {
+        for document in publicSnapshot.documents {
+            if let wordbook = try? document.data(as: Wordbook.self) {
+                print("Fetched Wordbook: \(wordbook.title), Due Date: \(String(describing: wordbook.dueDate?.dateValue())), Attendees Count: \(wordbook.attendees.count), SharedWith Count: \(wordbook.sharedWith?.count ?? 0), Created At: \(wordbook.createdAt.dateValue())")
+                
+                // 필터링 조건 확인
+                let dueDateValid = wordbook.dueDate == nil || wordbook.dueDate!.dateValue() > Date()
+                let attendeesValid = wordbook.attendees.count < wordbook.maxAttendees  // maxAttendees 필드가 필요함
+
+                if dueDateValid && attendeesValid && !wordbookSet.contains(wordbook.id) {
+                    wordbookSet.insert(wordbook.id)
                     wordbooks.append(wordbook)
                 }
             }
         }
-        
-        return wordbooks
+
+        print("Filtered Wordbooks: \(wordbooks.map { $0.title })")
+
+        // 최신 생성 순으로 정렬
+        return wordbooks.sorted { $0.createdAt.dateValue() > $1.createdAt.dateValue() }
     }
-    
+
     // 단어장 삭제
     func deleteWordbook(withId wordbookId: String) async throws {
         let wordbookRef = db.collection("wordbooks").document(wordbookId)
