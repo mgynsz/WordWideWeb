@@ -17,6 +17,8 @@ class InvitingVC: UIViewController {
     lazy var topLogo = ImageFactory().makeImage()
     
     private let tableview = UITableView()
+    
+    private let pushNotificationHelper = PushNotificationHelper.shared
 
     private var invitationList: [InvitationViewData] = [] // 네트워크로 받아올 데이터
 
@@ -78,6 +80,33 @@ class InvitingVC: UIViewController {
                 print("Error fetching invitations: \(error)")
             }
         }
+        
+        for invitation in invitationList {
+            let dueDate = invitation.dueDate
+            let id = invitation.wordbookId
+            let title = invitation.title
+            
+            guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
+            pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(id)")
+        }
+    }
+    
+    private func convertToDateComponents(from dueDate: String) -> DateComponents? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        // 문자열을 Date로 변환
+        guard let date = dateFormatter.date(from: dueDate) else {
+            print("Invalid date format")
+            return nil
+        }
+        
+        // Date를 DateComponents로 변환
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        
+        return components
     }
 }
 
