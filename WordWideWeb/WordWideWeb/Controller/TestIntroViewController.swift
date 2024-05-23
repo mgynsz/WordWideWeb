@@ -32,7 +32,7 @@ class TestIntroViewController: UIViewController {
             Word(id: "w4", term: "Protocol", definition: "A blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality."),
             Word(id: "w5", term: "Algorithm", definition: "A process or set of rules to be followed in calculations or other problem-solving operations."),
             Word(id: "w6", term: "Data Structure", definition: "A particular way of organizing and storing data in a computer so that it can be accessed and modified efficiently.")
-        ]
+        ], maxAttendees: 10
     )
     
     // MARK: - life cycles
