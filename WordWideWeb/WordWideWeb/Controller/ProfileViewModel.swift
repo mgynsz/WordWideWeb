@@ -14,6 +14,7 @@ class ProfileViewModel: ObservableObject {
     @Published var displayName: String = ""
     @Published var photoURL: URL?
     @Published var socialMediaLink: String? = nil
+    @Published var sharedWordbooks: [Wordbook] = []
     
     var user: User?
 
@@ -50,6 +51,21 @@ class ProfileViewModel: ObservableObject {
                 self.updatePublishedValues()
             } else {
                 print("Error observing user updates: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+    }
+    
+    func fetchSharedWordbooks() {
+        guard let user = Auth.auth().currentUser else { return }
+        
+        Task {
+            do {
+                let sharedWordbooks = try await FirestoreManager.shared.fetchSharedWordbooks(for: user.uid)
+                DispatchQueue.main.async {
+                    self.sharedWordbooks = sharedWordbooks
+                }
+            } catch {
+                print("Error fetching shared wordbooks: \(error)")
             }
         }
     }

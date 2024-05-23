@@ -92,6 +92,7 @@ class MyInfoVC: UIViewController {
     private var segmentIcons = ["person", "person.3"]
     private let indicatorView = UIView()
     private var wordbooks: [Wordbook] = []
+    private var sharedWordbooks: [Wordbook] = []
     private var isPublicView: Bool = true
     
     
@@ -116,6 +117,7 @@ class MyInfoVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         viewModel.fetchUserInfo()
+        viewModel.fetchSharedWordbooks()
         fetchWordbooks()
     }
     
@@ -304,7 +306,7 @@ class MyInfoVC: UIViewController {
             print("No authenticated user found.")
             return
         }
-        
+
         Task {
             do {
                 let userId = user.uid
