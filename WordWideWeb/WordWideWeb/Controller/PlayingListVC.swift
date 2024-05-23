@@ -15,6 +15,7 @@ class PlayingListVC: UIViewController {
     private var selectedIndexPath: IndexPath?
     private var searchWord: String = ""
     private var wordTerms: [Word] = []
+    private let pushNotificationHelper = PushNotificationHelper.shared
     
     var wordBooks: [Wordbook] = [ ]
     
@@ -122,6 +123,11 @@ class PlayingListVC: UIViewController {
         }
         
         let wordbookId = wordBooks[indexPath.row].id
+        let dueDate = wordBooks[indexPath.row].dueDate
+        let title = wordBooks[indexPath.row].title
+        guard let dueDateComponents = convertToDateComponents(from: dueDate) else { return  }
+        pushNotificationHelper.pushNotification(test: title, time: dueDateComponents, identifier: "\(wordbookId)")
+  
         joinWordBook(for: wordbookId)
     }
     
@@ -130,7 +136,7 @@ class PlayingListVC: UIViewController {
             print("No authenticated user found.")
             return
         }
-        
+
         Task {
             do {
                 let isAdded = try await FirestoreManager.shared.addAttendee(to: wordbookId, attendee: user.uid)
@@ -145,11 +151,30 @@ class PlayingListVC: UIViewController {
         }
     }
     
+    private func convertToDateComponents(from timestamp: Timestamp?) -> DateComponents? {
+        guard let timestamp = timestamp else { return nil }
+        
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp.seconds))
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
+        
+        return components
+    }
+    
     private func showAlert(message: String) {
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
+        reloadDataForResult()
         playlistView.resultView.reloadData()
         present(alert, animated: true, completion: nil)
+    }
+    
+    private func reloadDataForResult() {
+        if searchWord == "" {
+            setDataForTrending()
+        } else {
+            setDataForSearchWord(keyword: searchWord)
+        }
     }
     
 }
@@ -209,15 +234,14 @@ extension PlayingListVC: UITableViewDelegate, UITableViewDataSource {
         Task {
             do {
                 let words = try await getWords(for: wordbookId)
-                //self.wordBooks[indexPath.row].words = words
-                
+
                 DispatchQueue.main.async {
                     self.wordBooks[indexPath.row].words = words
                     cell.wordList = self.wordBooks[indexPath.row].words.map { $0.term }
                     cell.wordbookId = wordbookId
                     
                     cell.nowPplNum = self.wordBooks[indexPath.row].attendees.count
-                    //cell.pplNum = self.wordBooks[indexPath.row].attendees.count
+                    cell.pplNum = self.wordBooks[indexPath.row].maxAttendees
                     
                     // 이미지를 로드하여 셀에 설정
                     self.fetchImageAndSetImage(for: owner, imageView: cell.listview.imageLabel)
@@ -229,49 +253,7 @@ extension PlayingListVC: UITableViewDelegate, UITableViewDataSource {
         
         return cell
     }
-    
-    //    func fetchWordFromWordbook(){
-    //        Task {
-    //            do {
-    //                let words = try await getWords(for: wordBooks[indexPath.row].id)
-    //                wordTerms = words //.map { $0.term }
-    //                print(wordTerms)
-    //                cell.wordList = wordTerms
-    //                cell.wordbookId = localWordBooks[indexPath.row].id
-    //                cell.nowPplNum = localWordBooks[indexPath.row].sharedWith?.count ?? 0
-    //                cell.pplNum = localWordBooks[indexPath.row].attendees.count
-    //                // 이미지를 비동기적으로 로드하여 셀에 설정
-    //                await fetchImageAndSetImage(for: owner, imageView: cell.listview.imageLabel)
-    //            } catch {
-    //                print("Error fetching words: \(error.localizedDescription)")
-    //            }
-    //        }
-    //    }
-    
-    //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    //        guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlayingListViewCell", for: indexPath) as? PlayingListViewCell else {
-    //            return UITableViewCell()
-    //        }
-    //
-    //        let title = wordBooks[indexPath.row].title
-    //        let date = convertTimestampToString(timestamp: wordBooks[indexPath.row].dueDate)
-    //        let owner =  wordBooks[indexPath.row].ownerId
-    //        cell.listview.bind(imageData: Data() ,title: title, date: date)
-    //
-    //        let terms = wordBooks[indexPath.row].words.map { $0.term }
-    //        cell.wordList = getWords(for: wordBooks[indexPath.row].id).map { $0.term }
-    //        cell.wordbookId = wordBooks[indexPath.row].id
-    //        cell.nowPplNum = 0
-    //        if let num = wordBooks[indexPath.row].sharedWith?.count {
-    //            cell.nowPplNum = num
-    //        }
-    //        cell.pplNum = wordBooks[indexPath.row].attendees.count
-    //
-    //        // 이미지를 비동기적으로 로드하여 셀에 설정
-    //        fetchImageAndSetImage(for: owner, imageView: cell.listview.imageLabel)
-    //
-    //        return cell
-    //    }
+
     
     
     func fetchImageAndSetImage(for id: String, imageView: UIImageView) {

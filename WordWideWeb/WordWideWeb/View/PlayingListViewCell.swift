@@ -10,15 +10,14 @@ import FirebaseAuth
 
 class PlayingListViewCell: UITableViewCell {
     
-    var height = 80
-    var listview = ListViewCell()
+    private var height = 80
+    private var cellCount = 1
     var wordList: [String] = ["a"]
+    var listview = ListViewCell()
     var nowPplNum = 5
     var pplNum = 100
     var wordbookId = ""
-    private var cellCount = 1
-    
-    
+
     private let wordViewFlowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
