@@ -14,7 +14,7 @@ extension UICollectionView {
     func setEmptyMsg(_ msg: String) {
         let msgLabel: UILabel = {
             let label = UILabel()
-            label.text = "현재 만들어진 단어장이 없습니다."
+            label.text = "There is no wordbook created."
             label.textColor = .black
             label.numberOfLines = 0
             label.textAlignment = .center

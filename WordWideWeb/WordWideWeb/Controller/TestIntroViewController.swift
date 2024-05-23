@@ -46,12 +46,12 @@ class TestIntroViewController: UIViewController {
     
     // MARK: - method
     
-    func setData(){
+    private func setData(){
         testView.bind(title: testWordBook.title, blockCount: testWordBook.wordCount)
         testView.startBtn.addTarget(self, action: #selector(didTappedStartBtn), for: .touchUpInside)
     }
     
-    func getWords(){
+    private func getWords(){
         let id = testWordBook.id
         Task {
             do {
@@ -68,11 +68,12 @@ class TestIntroViewController: UIViewController {
         present(testViewController, animated: true)
     }
     
-    func bind() {
-        testViewController.secondLeft = testWordBook.wordCount * 60
+    private func bind() {
+        testViewController.secondLeft = testWordBook.wordCount * 10
         testViewController.block = wordblocks.map { ["term": $0.term, "definition": $0.definition] }
         testViewController.taskname = testWordBook.title
         testViewController.taskmem = testWordBook.attendees
+        testViewController.testingWordbookId = testWordBook.id
     }
 }
 

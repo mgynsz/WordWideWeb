@@ -19,6 +19,7 @@ class TestViewController: UIViewController {
     private let testView = TestView()
     var secondLeft: Int = 180
     
+    var testingWordbookId: String = ""
     var taskname: String = ""
     var taskmem: [String] = []
     var block: [[String:String]] = []
@@ -41,7 +42,7 @@ class TestViewController: UIViewController {
     }
     
     // MARK: - method
-    func setData(){
+    private func setData(){
         testView.friendView.register(TestFriendViewCell.self, forCellWithReuseIdentifier: "TestFriendViewCell")
         testView.friendView.dataSource = self
         testView.friendView.delegate = self
@@ -59,7 +60,7 @@ class TestViewController: UIViewController {
         reloadQView()
     }
     
-    func setTimer(){
+    private func setTimer(){
         secondLeft = block.count * 10
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { (t) in
             //남은 시간(초)에서 1초 빼기
@@ -81,7 +82,7 @@ class TestViewController: UIViewController {
         })
     }
     
-    func reloadQView(){
+    private func reloadQView(){
         print("currentIndex\(currentIndex)")
         if let def = block[currentIndex]["definition"] {
             testView.bindQ(page: currentIndex+1, definition: def)
@@ -105,7 +106,7 @@ class TestViewController: UIViewController {
         }
     }
     
-    func moveToResultView(){
+    private func moveToResultView(){
         bind()
         resultVC.modalPresentationStyle = .fullScreen
         //self.present(resultVC, animated: true)
@@ -122,29 +123,30 @@ class TestViewController: UIViewController {
         }
     }
     
-    func isAlreadySolveAndRight(){
+    private func isAlreadySolveAndRight(){
         testView.questionView.layer.borderColor = UIColor.green.cgColor
         testView.questionView.layer.borderWidth = 2
         testView.submitBtn.isEnabled = false
     }
     
-    func isAlreadySolveAndWrong(){
+    private func isAlreadySolveAndWrong(){
         testView.questionView.layer.borderColor = UIColor.red.cgColor
         testView.questionView.layer.borderWidth = 2
         testView.submitBtn.isEnabled = false
     }
     
-    func isNotSolved(){
+    private func isNotSolved(){
         testView.questionView.layer.borderWidth = 0
     }
     
-    func bind(){
+    private func bind(){
         resultVC.block = self.block
         resultVC.bind(status: status)
+        resultVC.testResultWordbookId = testingWordbookId
     }
     
     
-    @objc func checkAnswer(){
+    @objc private func checkAnswer(){
         guard let userInput = testView.answerLabel.text else {
             print("No answer entered")
             return
@@ -164,7 +166,7 @@ class TestViewController: UIViewController {
         }
     }
     
-    @objc func nextBtnTapped(){
+    @objc private func nextBtnTapped(){
         testView.answerLabel.text = ""
         if currentIndex < block.count - 2 {
             testView.beforeBtn.isEnabled = true
@@ -181,7 +183,7 @@ class TestViewController: UIViewController {
         }
     }
     
-    @objc func beforeBtnTapped(){
+    @objc private func beforeBtnTapped(){
         testView.answerLabel.text = ""
         if currentIndex == 1 {
             currentIndex -= 1
