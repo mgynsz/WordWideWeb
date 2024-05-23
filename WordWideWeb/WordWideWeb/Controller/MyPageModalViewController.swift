@@ -12,7 +12,6 @@ class MyPageModalViewController: UIViewController {
 
     var term: String = ""
     //var receivedItem: Item = Item(word: "", pos: "", sense: [])
-    
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "xmark"), for: .normal)

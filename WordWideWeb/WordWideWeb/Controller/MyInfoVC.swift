@@ -126,11 +126,10 @@ class MyInfoVC: UIViewController {
         viewModel.fetchSharedWordbooks()
         fetchWordbooks()
         updateBlockCountLabel()
+        removeExpiredWordbooks()
     }
     
     private func updateBlockCountLabel() {
-        
-        
         blockCountLabel.text = "block \(blockNum)"
     }
     
@@ -171,6 +170,14 @@ class MyInfoVC: UIViewController {
                 } else {
                     self.instagramIcon.isHidden = true
                 }
+            }
+            .store(in: &cancellables)
+        
+        viewModel.$sharedWordbooks
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] sharedWordbooks in
+                self?.sharedWordbooks = sharedWordbooks
+                self?.collectionView.reloadData()
             }
             .store(in: &cancellables)
     }
@@ -325,6 +332,9 @@ class MyInfoVC: UIViewController {
             print("No authenticated user found.")
             return
         }
+        
+        self.wordbooks = UserDefaults.standard.cachedWordbooks
+        self.collectionView.reloadData()
 
         Task {
             do {
@@ -333,6 +343,8 @@ class MyInfoVC: UIViewController {
                 DispatchQueue.main.async {
                     self.wordbooks = wordbooks.sorted { $0.createdAt.dateValue() > $1.createdAt.dateValue() } // 생성 날짜로 정렬
                     self.collectionView.reloadData()
+                    
+                    UserDefaults.standard.cachedWordbooks = self.wordbooks
                 }
             } catch {
                 print("Error fetching wordbooks: \(error.localizedDescription)")
@@ -349,9 +361,30 @@ class MyInfoVC: UIViewController {
                 DispatchQueue.main.async {
                     self.wordbooks.removeAll { $0.id == wordbook.id }
                     self.collectionView.reloadData()
+                    
+                    UserDefaults.standard.cachedWordbooks = self.wordbooks
                 }
             } catch {
                 print("Error deleting wordbook: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func removeExpiredWordbooks() {
+        let currentDate = Date()
+        Task {
+            for (index, wordbook) in wordbooks.enumerated().reversed() {
+                if let dueDate = wordbook.dueDate?.dateValue(), dueDate < currentDate {
+                    do {
+                        try await FirestoreManager.shared.deleteWordbook(withId: wordbook.id)
+                        wordbooks.remove(at: index)
+                    } catch {
+                        print("Error deleting wordbook: \(error)")
+                    }
+                }
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
             }
         }
     }
@@ -362,12 +395,20 @@ class MyInfoVC: UIViewController {
         present(addWordBookVC, animated: true, completion: nil)
     }
     
+    private var isAlertPresented = false
+    
     // 삭제 확인 알림
     private func showDeleteConfirmation(for wordbook: Wordbook) {
+        guard !isAlertPresented else { return } // 알림이 이미 표시되고 있는지 확인
+        isAlertPresented = true // 알림 표시 상태로 설정
+        
         let alert = UIAlertController(title: "Delete Wordbook", message: "Are you sure you want to delete this wordbook?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [weak self] _ in
+            self?.isAlertPresented = false // 알림이 닫히면 플래그를 해제
+        }))
         alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
             guard let self = self else { return }
+            self.isAlertPresented = false // 알림이 닫히면 플래그를 해제
             self.deleteWordbook(wordbook)
         }))
         present(alert, animated: true, completion: nil)
@@ -407,13 +448,18 @@ class MyInfoVC: UIViewController {
 
 extension MyInfoVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return wordbooks.filter { $0.isPublic == isPublicView }.count
+        let filteredWordbooks = wordbooks.filter { $0.isPublic == isPublicView }
+        let filteredSharedWordbooks = sharedWordbooks.filter { $0.isPublic == isPublicView }
+        return filteredWordbooks.count + filteredSharedWordbooks.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WordbookCell", for: indexPath) as! WordbookCell
         let filteredWordbooks = wordbooks.filter { $0.isPublic == isPublicView }
-        let wordbook = filteredWordbooks[indexPath.item]
+        let filteredSharedWordbooks = sharedWordbooks.filter { $0.isPublic == isPublicView }
+        let allWordbooks = filteredWordbooks + filteredSharedWordbooks
+        
+        let wordbook = allWordbooks[indexPath.item]
         cell.configure(with: wordbook)
         
         cell.onDelete = { [weak self] in
