@@ -169,8 +169,7 @@
     
 - **Framework**
 
-<img src="https://img.shields.io/badge/-UIKit-2396F3?style=flat&logo=uikit&logoColor=white"/> 
-<img src="https://img.shields.io/badge/-SwiftUI-F05138?style=flat&logo=swift&logoColor=white"/> 
+  <img src="https://img.shields.io/badge/-UIKit-2396F3?style=flat&logo=uikit&logoColor=white"/> <img src="https://img.shields.io/badge/-SwiftUI-F05138?style=flat&logo=swift&logoColor=white"/> 
 
 - **Language**
 
@@ -189,10 +188,11 @@
 ```markdown
 WWW
 ├── Model
-│   ├── NetworkManager
-│   ├── RemoteDictionary
-│   ├── MyPage
-│   └── InvitationData
+│   ├── Network
+│   │     ├── NetworkManager
+│         ├── RemoteDictionary
+│         ├── MyPage
+│         └── InvitationData
 │
 ├── View
 │   ├── DictionaryTableViewCell
