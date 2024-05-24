@@ -97,8 +97,8 @@
 <p float="left">
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a62cbdab-791f-4811-b5d9-29d334288453" width="200" height="430">
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/102b09c8-208a-4886-9233-ef9a81e6ee2b" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/102b09c8-208a-4886-9233-ef9a81e6ee2b" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/102b09c8-208a-4886-9233-ef9a81e6ee2b" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/3a111017-127f-4f98-8a72-b39177ac2423" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c460f7a8-a0f5-4f39-b951-672d569fab64" width="200" height="430">
 </p>
 
 ### 7.테스트화면
