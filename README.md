@@ -69,58 +69,7 @@
 
 <br>
 
-## Demo
-### 1.스플래시, 로그인
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/51002a48-148e-4887-baec-271207916fda" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/996b44d5-4ec6-4644-a63b-329508c18010" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c7e8c23b-ff2d-475f-9d81-3b1b2db97a34" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/6951cc67-562c-4446-829f-8e022eed8dcd" width="200" height="430">
-</p>
 
-### 2.홈화면
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/6a211366-c3c6-4e7b-87e2-fc4e486043fd" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/4f85f9d2-6678-4094-b38a-036bc9f5e47a" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/7501ba60-6165-4ec4-8a0c-d6954bb7c720" width="200" height="430">
-</p>
-
-### 3.단어장 검색화면
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/632e44d0-1a7a-4ecb-b4f6-68fca2d94818" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/9f4703a9-c1e5-401d-a363-ff42fd273184" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/24fe93c3-3f20-4724-9f91-e0656d31fe82" width="200" height="430">
-</p>
-
-### 4.단어추가화면 - 사전기능
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/ba1a95f5-fb91-40e5-a6e0-3f27a173a478" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/e08d6256-374c-4aaa-9b01-b54d65bad24c" width="200" height="430">
-</p>
-
-### 5.초대요청확인화면
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a62cbdab-791f-4811-b5d9-29d334288453" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/9e564910-2f8d-415c-b027-452b04ed54a8" width="200" height="430">
-</p>
-
-### 6.내정보기능
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a62cbdab-791f-4811-b5d9-29d334288453" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/102b09c8-208a-4886-9233-ef9a81e6ee2b" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/3a111017-127f-4f98-8a72-b39177ac2423" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c460f7a8-a0f5-4f39-b951-672d569fab64" width="200" height="430">
-</p>
-
-### 7.테스트화면
-<p float="left">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a3daf9f4-3105-4f36-b78c-fb787fdd05a6" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/ced6ebee-d59a-49b4-baf7-7ee41237549e" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/65f0c8db-d524-4774-a46f-073784cdc455" width="200" height="430">
-<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/841100c0-a79e-4634-9f02-cb67e48470bf" width="200" height="430">
-</p>  
-
-<br>
 
 ## Features
 ### 소셜 로그인
@@ -201,6 +150,58 @@
 
     <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/> 
 
+
+<br>
+## Demo
+### 1.스플래시, 로그인
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/51002a48-148e-4887-baec-271207916fda" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/996b44d5-4ec6-4644-a63b-329508c18010" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c7e8c23b-ff2d-475f-9d81-3b1b2db97a34" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/6951cc67-562c-4446-829f-8e022eed8dcd" width="200" height="430">
+</p>
+
+### 2.홈화면
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/6a211366-c3c6-4e7b-87e2-fc4e486043fd" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/4f85f9d2-6678-4094-b38a-036bc9f5e47a" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/7501ba60-6165-4ec4-8a0c-d6954bb7c720" width="200" height="430">
+</p>
+
+### 3.단어장 검색화면
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/632e44d0-1a7a-4ecb-b4f6-68fca2d94818" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/9f4703a9-c1e5-401d-a363-ff42fd273184" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/24fe93c3-3f20-4724-9f91-e0656d31fe82" width="200" height="430">
+</p>
+
+### 4.단어추가화면 - 사전기능
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/ba1a95f5-fb91-40e5-a6e0-3f27a173a478" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/e08d6256-374c-4aaa-9b01-b54d65bad24c" width="200" height="430">
+</p>
+
+### 5.초대요청확인화면
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a62cbdab-791f-4811-b5d9-29d334288453" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/9e564910-2f8d-415c-b027-452b04ed54a8" width="200" height="430">
+</p>
+
+### 6.내정보기능
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a62cbdab-791f-4811-b5d9-29d334288453" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/102b09c8-208a-4886-9233-ef9a81e6ee2b" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/3a111017-127f-4f98-8a72-b39177ac2423" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c460f7a8-a0f5-4f39-b951-672d569fab64" width="200" height="430">
+</p>
+
+### 7.테스트화면
+<p float="left">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/a3daf9f4-3105-4f36-b78c-fb787fdd05a6" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/ced6ebee-d59a-49b4-baf7-7ee41237549e" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/65f0c8db-d524-4774-a46f-073784cdc455" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/841100c0-a79e-4634-9f02-cb67e48470bf" width="200" height="430">
+</p>  
 
 <br>
 
