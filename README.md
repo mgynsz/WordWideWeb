@@ -59,15 +59,12 @@
 </details>
 
 ## Demo
-// 모든 화면 이미지 캡처 추가 예정
-
-<img src="img src="/github.com/ZooomBiedle/WordWideWeb/assets/155615768/74f27121-738d-4e7e-9f7e-08ff9a34a236" width="200" height="430">
-###1.스플래시, 로그인
+### 1.스플래시, 로그인
 <p float="left">
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/51002a48-148e-4887-baec-271207916fda" width="200" height="430">
-<img src="/github.com/ZooomBiedle/WordWideWeb/assets/115604822/996b44d5-4ec6-4644-a63b-329508c18010" width="200" height="430">
-<img src="/github.com/ZooomBiedle/WordWideWeb/assets/115604822/c7e8c23b-ff2d-475f-9d81-3b1b2db97a34" width="200" height="430">
-<img src="/github.com/ZooomBiedle/WordWideWeb/assets/115604822/6951cc67-562c-4446-829f-8e022eed8dcd" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/996b44d5-4ec6-4644-a63b-329508c18010" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/c7e8c23b-ff2d-475f-9d81-3b1b2db97a34" width="200" height="430">
+<img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/6951cc67-562c-4446-829f-8e022eed8dcd" width="200" height="430">
 
    
 ## Features
