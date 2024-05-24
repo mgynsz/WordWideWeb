@@ -21,6 +21,7 @@
 초대한 or 초대받은 친구들과 공유된 테스트 단어장으로 게임하듯 공부할 수 있습니다.)
 
 <br>
+<br>
 
 ## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
@@ -36,10 +37,12 @@
     - 홈 화면 및 단어장 캐로셀, 단어 상세페이지 등 UI Design 전반 
 
 <br>
+<br>
 
 ## 1. Requirements
 - App requires **iOS 17.4 or above**
 
+<br>
 <br>
 
 
@@ -64,6 +67,7 @@
 
     <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
 
+<br>
 <br>
 
 ## 3. Timeline
@@ -155,7 +159,7 @@
 ### 단어 테스트 결과
 - 맞춘 단어와 틀린 단어의 결과 안내 기능
 
-
+<br>
 <br>
 
 ## 5. Demo
@@ -209,6 +213,7 @@
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/841100c0-a79e-4634-9f02-cb67e48470bf" width="200" height="430">
 </p>  
 
+<br>
 <br>
 
 ## 6. Project Structure
