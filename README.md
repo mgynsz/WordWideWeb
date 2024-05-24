@@ -30,6 +30,18 @@
 (사전 검색 단어로 나만의 단어장을 만들거나, 
 초대한 or 초대받은 친구들과 공유된 테스트 단어장으로 게임하듯 공부할 수 있습니다.)
 
+## Developer (가나다 순)
+*  **박준영** ([labydin](https://github.com/labydin))
+    - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
+
+*  **신지연** ([JiYeonDu](https://github.com/JiYeonDu))
+    - 단어장 검색 및 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
+
+*  **장진영** ([mgynsz](https://github.com/mgynsz))
+    - Apple, Google 로그인 관리 및 친구 초대를 위한 backend 전반
+
+*  **채나연** ([Nayeon Chae](https://github.com/NY-Chae))
+    - 홈 화면 및 단어장 캐로셀, 단어 상세페이지 등 UI Design 전반 
 
 ## Timeline
 
@@ -192,21 +204,39 @@
 WWW
 ├── Model
 │   ├── Network
-│   │     ├── NetworkManager
-│         ├── RemoteDictionary
-│         ├── MyPage
-│         └── InvitationData
+│   │    ├── NetworkManager
+│   │    ├── RemoteDictionary
+│   │    ├── MyPage
+│   │    └── InvitationData
+│   │
+│   └─ Firebase
+│      ├─ SignInAppleHelper
+│      ├─ AuthenticationManager
+│      ├─ FirestoreManager
+│      ├─ SignInGoogleHelper
+│      ├─ User
+│      └─ Utilities
 │
+│ 
 ├── View
-│   ├── DictionaryTableViewCell
-│   ├── TestFriendViewCell
+│   ├── Cell
+│   │    ├── TestFriendViewCell
+│   │    ├── FriendCell
+│   │    ├── DefaultTableViewCell
+│   │    ├── WordbookCell
+│   │    ├── PlayingListViewCell
+│   │    ├── ExpandableTableViewCell
+│   │    ├── InvitedFriendCell
+│   │    ├── DictionaryTableViewCell
+│   │    └── MyPageCollectionViewCell
+│   │
 │   ├── TestResultView
 │   ├── TestView
 │   ├── TestIntroView
 │   ├── CarouselLayout
-│   ├── DefaultTableViewCell
-│   ├── ExpandableTableViewCell
-│   └── InvitedFriendCell
+│   ├── PlayingListView
+│   ├── CircleAnimateText
+│   └── LaunchView
 │
 │
 ├── Controller
@@ -217,6 +247,9 @@ WWW
 │   ├── MyPageModalViewController
 │   ├── PlayingListViewController
 │   ├── DictionaryVC
+│   ├── SearchFriendsVC
+│   ├── SignInVC
+│   ├── SignUpVC
 │   ├── InvitingVC
 │   ├── MyInfoViewController
 │   ├── WordbookCell
@@ -247,15 +280,4 @@ WWW
 └ 
 ```
 
-## Developer (가나다 순)
-*  **박준영** ([labydin](https://github.com/labydin))
-    - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
 
-*  **신지연** ([JiYeonDu](https://github.com/JiYeonDu))
-    - 단어장 검색 및 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
-
-*  **장진영** ([mgynsz](https://github.com/mgynsz))
-    - Apple, Google 로그인 관리 및 친구 초대를 위한 backend 전반
-
-*  **채나연** ([Nayeon Chae](https://github.com/NY-Chae))
-    - 홈 화면 및 단어장 캐로셀, 단어 상세페이지 등 UI Design 전반 
