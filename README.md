@@ -1,4 +1,7 @@
-![rounded](https://capsule-render.vercel.app/api?type=rounded&color=timeAuto&text=WordWideWeb&fontAlignY=50&fontSize=40&height=200&stroke=000000&strokeWidth=2)
+<div align="center">
+<h1> Word Wide Web </h1>
+🌿한글 단어로 연결된 세계: 따로 또 같이! 게임처럼 재미있게!🌿
+</div>
 
 
 # Table of Contents
@@ -249,7 +252,7 @@ WWW
     - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
 
 *  **신지연** ([JiYeonDu](https://github.com/JiYeonDu))
-    - 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
+    - 단어장 검색 및 단어 테스트 및 예약 알람, 결과 기록 저장 등 단어 테스트 전반
 
 *  **장진영** ([mgynsz](https://github.com/mgynsz))
     - Apple, Google 로그인 관리 및 친구 초대를 위한 backend 전반
