@@ -13,10 +13,10 @@
 // logo 이미지 추가
 
 
-
 ## Description
 
 단어로 연결된 세계.
+공부로 만나는 세계.
 따로 또 같이 공부하는 커뮤니티 사전검색 단어장! 
 맞다이로 들어와.. 
 
@@ -27,7 +27,33 @@
 
 ## Timeline
 
+<details>
+   <summary>5/13 - 5/14</summary>
+    <pre>● 기획 / 디자인
+    ○ 컨셉, 역할 분담, 와이어프레임 등
+    </pre>
+</details>
 
+<details>
+   <summary>5/15 - 5/16</summary>
+        <pre>● 소셜 로그인 구현 (회원 가입 과정은 skip)
+    ○ 구글 아이디, 애플 계정, 이메일 인증 sign in  
+        </pre>
+</details>
+
+<details>
+   <summary>5/17 - 5/21</summary>
+    <pre>● 백엔드 전반 
+● firebase를 통한 계정 관리 및 친구 초대 기초 완성
+    </pre>
+</details>
+
+<details>
+   <summary>5/22 - 5/23</summary>
+    <pre>● 최종 점검
+    ○ 데이터 연결 / 에러 처리 / UI design 수정
+    </pre>
+</details>
 
 ## Demo
 // 모든 화면 이미지 캡처 추가 예정
@@ -72,13 +98,13 @@
 - 검색한 단어를 단어장에 추가
 
 
-### 친구 초대
-- Test List 
-- Reject or Accept
+### 친구 초대 (초대 요청 notify)
+- 다른 유저가 단어장 생성시 나를 초대하며 발송한 초대장 
+- Reject or Accept 옵션 중 선택
 
 
 ### 단어 테스트
-- 정해진 시간 동안 정해진 단어의 퀴즈를 테스트하는 기능
+- 정해진 시간 동안 정해진 단어의 퀴즈 테스트 기능
 
 
 ### 단어 테스트 결과
