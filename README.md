@@ -13,7 +13,7 @@
 
 # WWW : Word Wide Web
 <p align="center">
-  <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/0586fa35-5a5a-4fe5-9b1b-51c84c4807dc">
+  <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/0586fa35-5a5a-4fe5-9b1b-51c84c4807dc" width="500" height="500">
 </p>
 
 ## Description
