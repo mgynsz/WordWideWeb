@@ -37,7 +37,36 @@
 
 <br>
 
-## Timeline
+## 1. Requirements
+- App requires **iOS 17.4 or above**
+
+<br>
+
+
+## 2. Stacks
+- **Environment**
+
+    <img src="https://img.shields.io/badge/-Xcode-147EFB?style=flat&logo=xcode&logoColor=white"/> <img src="https://img.shields.io/badge/-git-F05032?style=flat&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black"/> <img src="https://img.shields.io/badge/Adobe InDesign-FF3366?style=flat-square&logo=Adobe InDesign&logoColor=white"/>
+    
+- **Framework**
+
+  <img src="https://img.shields.io/badge/-UIKit-2396F3?style=flat&logo=uikit&logoColor=white"/> <img src="https://img.shields.io/badge/-SwiftUI-F05138?style=flat&logo=swift&logoColor=white"/> 
+
+- **Language**
+
+    <img src="https://img.shields.io/badge/-swift-F05138?style=flat&logo=swift&logoColor=white"/> 
+
+- **API**
+
+    한국 기초 사전 API (국립 국어원 제작)
+
+- **Communication**
+
+    <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/>
+
+<br>
+
+## 3. Timeline
 
 <details>
    <summary>5/13 - 5/14</summary>
@@ -69,9 +98,7 @@
 
 <br>
 
-
-
-## Features
+## 4. Features
 ### 소셜 로그인
 - sign in / sign up with Google & Apple
 
@@ -123,36 +150,7 @@
 
 <br>
 
-## Requirements
-- App requires **iOS 17.4 or above**
-
-<br>
-
-
-## Stacks
-- **Environment**
-
-    <img src="https://img.shields.io/badge/-Xcode-147EFB?style=flat&logo=xcode&logoColor=white"/> <img src="https://img.shields.io/badge/-git-F05032?style=flat&logo=git&logoColor=white"/> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black"/> <img src="https://img.shields.io/badge/Adobe InDesign-FF3366?style=flat-square&logo=Adobe InDesign&logoColor=white"/>
-    
-- **Framework**
-
-  <img src="https://img.shields.io/badge/-UIKit-2396F3?style=flat&logo=uikit&logoColor=white"/> <img src="https://img.shields.io/badge/-SwiftUI-F05138?style=flat&logo=swift&logoColor=white"/> 
-
-- **Language**
-
-    <img src="https://img.shields.io/badge/-swift-F05138?style=flat&logo=swift&logoColor=white"/> 
-
-- **API**
-
-    한국 기초 사전 API (국립 국어원 제작)
-
-- **Communication**
-
-    <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/> 
-
-
-<br>
-## Demo
+## 5. Demo
 ### 1.스플래시, 로그인
 <p float="left">
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/51002a48-148e-4887-baec-271207916fda" width="200" height="430">
@@ -205,7 +203,7 @@
 
 <br>
 
-## Project Structure
+## 6. Project Structure
 
 ```markdown
 WWW
