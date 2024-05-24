@@ -1,4 +1,5 @@
-![WordWideWeb](https://capsule-render.vercel.app/api?type=waving&height=200&text=WordWideWeb&fontAlign=80&fontAlignY=40&color=gradient)
+![rounded](https://capsule-render.vercel.app/api?type=rounded&color=timeAuto&text=WordWideWeb&fontAlignY=50&fontSize=40&height=200&stroke=000000&strokeWidth=2)
+
 
 # Table of Contents
 1. [Description](#description)
