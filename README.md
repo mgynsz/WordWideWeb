@@ -4,16 +4,6 @@
 </div>
 
 
-## Table of Contents
-1. [Description](#description)
-2. [Timeline](#timeline)
-3. [Demo](#demo)
-4. [Features](#features)
-5. [Requirements](#requirements)
-6. [Stacks](#stacks)
-7. [ProjectStructure](#projectStructure)
-8. [Developer](#developer)
-
 ## WWW : Word Wide Web
 <p align="center">
   <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/0586fa35-5a5a-4fe5-9b1b-51c84c4807dc" width="500" height="500">
@@ -30,6 +20,8 @@
 (사전 검색 단어로 나만의 단어장을 만들거나, 
 초대한 or 초대받은 친구들과 공유된 테스트 단어장으로 게임하듯 공부할 수 있습니다.)
 
+<br>
+
 ## Developer (가나다 순)
 *  **박준영** ([labydin](https://github.com/labydin))
     - 사전 API 네트워크 연결, 단어장 내 단어 추가 및 파일 구조 관리 전반
@@ -42,6 +34,8 @@
 
 *  **채나연** ([Nayeon Chae](https://github.com/NY-Chae))
     - 홈 화면 및 단어장 캐로셀, 단어 상세페이지 등 UI Design 전반 
+
+<br>
 
 ## Timeline
 
@@ -72,6 +66,8 @@
     ○ 데이터 연결 / 에러 처리 / UI design 수정
     </pre>
 </details>
+
+<br>
 
 ## Demo
 ### 1.스플래시, 로그인
@@ -124,6 +120,8 @@
 <img src="https://github.com/ZooomBiedle/WordWideWeb/assets/115604822/841100c0-a79e-4634-9f02-cb67e48470bf" width="200" height="430">
 </p>  
 
+<br>
+
 ## Features
 ### 소셜 로그인
 - sign in / sign up with Google & Apple
@@ -174,8 +172,13 @@
 - 맞춘 단어와 틀린 단어의 결과 안내 기능
 
 
+<br>
+
 ## Requirements
 - App requires **iOS 17.4 or above**
+
+<br>
+
 
 ## Stacks
 - **Environment**
@@ -197,6 +200,9 @@
 - **Communication**
 
     <img src="https://img.shields.io/badge/-Slack-4A154B?style=flat&logo=Slack&logoColor=white"/> <img src="https://img.shields.io/badge/-Notion-000000?style=flat&logo=Notion&logoColor=white"/> <img src="https://img.shields.io/badge/-Figma-F24E1E?style=flat&logo=Figma&logoColor=white"/> 
+
+
+<br>
 
 ## Project Structure
 
